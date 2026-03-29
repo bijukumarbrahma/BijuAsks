@@ -7,11 +7,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-
 <style>
-/* ══════════════════════════════════════════════════
-   VARIABLES
-══════════════════════════════════════════════════ */
+/* ════════════════════════════════════════
+   VARIABLES & RESET
+════════════════════════════════════════ */
 :root {
   --bg:          #f5f0e8;
   --bg-2:        #ede7d9;
@@ -30,6 +29,8 @@
   --wrong-bg:    #fdecea;
   --skip-color:  #5a6f8a;
   --skip-bg:     #eaf0f7;
+  --gold:        #c8960c;
+  --gold-bg:     #fef9ec;
   --shadow:      0 8px 40px rgba(60,40,10,0.12);
   --shadow-sm:   0 2px 12px rgba(60,40,10,0.08);
   --radius:      20px;
@@ -55,52 +56,46 @@
   --wrong-bg:    #2a0e0e;
   --skip-color:  #7090b0;
   --skip-bg:     #0e1a2a;
+  --gold:        #f0c040;
+  --gold-bg:     #1a1500;
   --shadow:      0 8px 40px rgba(0,0,0,0.40);
   --shadow-sm:   0 2px 12px rgba(0,0,0,0.28);
 }
-
-/* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{font-size:16px;}
 body{
   font-family:'DM Sans',sans-serif;
-  background:var(--bg);
-  color:var(--ink);
-  min-height:100dvh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:background var(--tr),color var(--tr);
-  overflow-x:hidden;
+  background:var(--bg);color:var(--ink);min-height:100dvh;
+  display:flex;align-items:center;justify-content:center;
+  transition:background var(--tr),color var(--tr);overflow-x:hidden;
 }
 
-/* ── Screen system ── */
+/* ════════════════════════════════════════
+   SCREENS
+════════════════════════════════════════ */
 .screen{
-  position:fixed;inset:0;
-  display:flex;align-items:center;justify-content:center;
-  padding:1.5rem;z-index:10;
+  position:fixed;inset:0;display:flex;align-items:center;
+  justify-content:center;padding:1.5rem;z-index:10;
   opacity:1;transform:translateY(0);
   transition:opacity .35s ease,transform .35s ease;
 }
-.screen.hidden{
-  opacity:0;pointer-events:none;transform:translateY(18px);
-}
+.screen.hidden{opacity:0;pointer-events:none;transform:translateY(18px);}
 
-/* ── Theme toggle ── */
+/* ════════════════════════════════════════
+   THEME TOGGLE
+════════════════════════════════════════ */
 .theme-toggle{
-  position:fixed;top:1.25rem;right:1.25rem;z-index:100;
+  position:fixed;top:1.25rem;right:1.25rem;z-index:200;
   width:44px;height:44px;border-radius:50%;
   background:var(--surface);border:1.5px solid var(--border);
   box-shadow:var(--shadow-sm);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.15rem;
-  transition:background var(--tr),transform .2s ease,box-shadow .2s ease;
+  display:flex;align-items:center;justify-content:center;font-size:1.15rem;
+  transition:background var(--tr),transform .2s,box-shadow .2s;
 }
 .theme-toggle:hover{transform:scale(1.12) rotate(20deg);box-shadow:var(--shadow);}
 
-/* ══════════════════════
-   LANDING
-══════════════════════ */
+/* ════════════════════════════════════════
+   LANDING CARD
+════════════════════════════════════════ */
 .landing-card{
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--radius);box-shadow:var(--shadow);
@@ -108,7 +103,6 @@ body{
   text-align:center;animation:fadeUp .6s ease both;
 }
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-
 .brand-badge{
   display:inline-block;font-size:.7rem;font-weight:600;
   letter-spacing:.15em;text-transform:uppercase;
@@ -121,9 +115,9 @@ body{
   color:var(--ink);line-height:1;margin-bottom:.5rem;letter-spacing:-.02em;
 }
 .brand-title .accent{color:var(--accent);}
-.brand-tagline{font-size:.9rem;color:var(--ink-3);margin-bottom:2.2rem;font-weight:300;}
+.brand-tagline{font-size:.9rem;color:var(--ink-3);margin-bottom:2rem;font-weight:300;}
 
-.input-group{text-align:left;margin-bottom:1.5rem;}
+.input-group{text-align:left;margin-bottom:1.4rem;}
 .input-label{
   display:block;font-size:.78rem;font-weight:600;
   letter-spacing:.05em;text-transform:uppercase;
@@ -138,7 +132,7 @@ body{
 .name-input::placeholder{color:var(--ink-3);}
 .name-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
 
-.category-group{text-align:left;margin-bottom:1.8rem;}
+.category-group{text-align:left;margin-bottom:1.6rem;}
 .category-pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem;}
 .pill{
   padding:.4rem .9rem;border-radius:var(--radius-pill);
@@ -152,7 +146,7 @@ body{
 .last-score-banner{
   font-size:.82rem;color:var(--ink-3);background:var(--surface-2);
   border:1px solid var(--border);border-radius:var(--radius-sm);
-  padding:.55rem 1rem;margin-bottom:1.5rem;text-align:center;
+  padding:.55rem 1rem;margin-bottom:1.4rem;
 }
 
 .btn-primary{
@@ -160,11 +154,12 @@ body{
   width:100%;padding:.95rem 1.5rem;border-radius:var(--radius-sm);border:none;
   background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;
   font-size:1rem;font-weight:600;cursor:pointer;
-  box-shadow:0 4px 20px rgba(196,96,26,.3);letter-spacing:.01em;
-  transition:background var(--tr),transform .15s ease,box-shadow var(--tr);
+  box-shadow:0 4px 20px rgba(196,96,26,.3);
+  transition:background var(--tr),transform .15s,box-shadow var(--tr);
 }
 .btn-primary:hover{background:var(--accent-2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(196,96,26,.38);}
 .btn-primary:active{transform:translateY(0);}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 
 .btn-ghost{
   display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
@@ -175,9 +170,28 @@ body{
 }
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-soft);}
 
-/* ══════════════════════
+/* ════════════════════════════════════════
+   SETUP NOTICE (shown if Firebase not configured)
+════════════════════════════════════════ */
+.setup-notice{
+  background:var(--gold-bg);border:1.5px solid var(--gold);
+  border-radius:var(--radius-sm);padding:1rem 1.1rem;
+  margin-bottom:1.4rem;text-align:left;
+}
+.setup-notice-title{
+  font-size:.78rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.35rem;display:flex;align-items:center;gap:.4rem;
+}
+.setup-notice p{font-size:.8rem;color:var(--ink-2);line-height:1.55;}
+.setup-notice code{
+  display:inline-block;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:5px;padding:.1rem .35rem;font-size:.76rem;color:var(--accent);
+}
+.setup-steps{margin:.6rem 0 0 1rem;font-size:.8rem;color:var(--ink-2);line-height:1.8;}
+
+/* ════════════════════════════════════════
    LOADING
-══════════════════════ */
+════════════════════════════════════════ */
 .loading-card{display:flex;flex-direction:column;align-items:center;gap:1.5rem;}
 .loader-ring{
   width:64px;height:64px;border-radius:50%;
@@ -185,15 +199,12 @@ body{
   animation:spin .8s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{
-  font-size:1rem;color:var(--ink-3);font-weight:400;letter-spacing:.02em;
-  animation:pulse 1.2s ease-in-out infinite;
-}
+.loading-text{font-size:1rem;color:var(--ink-3);animation:pulse 1.2s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
 
-/* ══════════════════════
+/* ════════════════════════════════════════
    QUIZ CARD
-══════════════════════ */
+════════════════════════════════════════ */
 .quiz-card{
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--radius);box-shadow:var(--shadow);
@@ -210,7 +221,7 @@ body{
 .score-chip{
   font-size:.82rem;font-weight:600;color:var(--accent);
   background:var(--accent-soft);padding:.3rem .8rem;
-  border-radius:var(--radius-pill);letter-spacing:.02em;
+  border-radius:var(--radius-pill);
 }
 .progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:.55rem;}
 .progress-label{font-size:.78rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);}
@@ -221,11 +232,8 @@ body{
 .progress-bar-track{height:5px;background:var(--bg-2);border-radius:var(--radius-pill);overflow:hidden;margin-bottom:1.4rem;}
 .progress-bar-fill{
   height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  border-radius:var(--radius-pill);width:0%;
-  transition:width .5s cubic-bezier(.4,0,.2,1);
+  border-radius:var(--radius-pill);width:0%;transition:width .5s cubic-bezier(.4,0,.2,1);
 }
-
-/* Timer */
 .timer-row{display:flex;align-items:center;gap:1rem;margin-bottom:1.6rem;}
 .timer-arc-wrap{position:relative;width:48px;height:48px;flex-shrink:0;}
 .timer-arc{width:48px;height:48px;transform:rotate(-90deg);}
@@ -235,47 +243,37 @@ body{
   stroke-dasharray:125.66;stroke-dashoffset:0;
   transition:stroke-dashoffset 1s linear,stroke .3s ease;
 }
-.arc-fill.warning{stroke:#e8a020;}
-.arc-fill.danger{stroke:var(--wrong);}
+.arc-fill.warning{stroke:#e8a020;} .arc-fill.danger{stroke:var(--wrong);}
 .timer-num{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   font-size:.78rem;font-weight:700;color:var(--ink-2);font-variant-numeric:tabular-nums;
 }
 .timer-label-group{flex:1;}
-.timer-hint{display:block;font-size:.72rem;color:var(--ink-3);margin-bottom:.4rem;letter-spacing:.02em;}
+.timer-hint{display:block;font-size:.72rem;color:var(--ink-3);margin-bottom:.4rem;}
 .timer-bar-track{height:4px;background:var(--bg-2);border-radius:var(--radius-pill);overflow:hidden;}
 .timer-bar-fill{
   height:100%;background:var(--accent);border-radius:var(--radius-pill);width:100%;
   transition:width 1s linear,background .3s ease;
 }
-.timer-bar-fill.warning{background:#e8a020;}
-.timer-bar-fill.danger{background:var(--wrong);}
-
-/* Question */
+.timer-bar-fill.warning{background:#e8a020;} .timer-bar-fill.danger{background:var(--wrong);}
 .question-wrap{min-height:80px;margin-bottom:1.5rem;}
 .question-text{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(1rem,3.5vw,1.18rem);font-weight:500;
-  color:var(--ink);line-height:1.55;
+  font-family:'Playfair Display',serif;font-size:clamp(1rem,3.5vw,1.18rem);
+  font-weight:500;color:var(--ink);line-height:1.55;
 }
 @keyframes qIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 @keyframes qOut{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-20px)}}
 .q-enter{animation:qIn .3s ease both;}
-.q-exit {animation:qOut .2s ease both;}
-
-/* Options */
+.q-exit{animation:qOut .2s ease both;}
 .options-grid{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1.25rem;}
 .option-btn{
-  display:flex;align-items:center;gap:.8rem;
-  padding:.85rem 1rem;border-radius:var(--radius-sm);
-  border:1.5px solid var(--border);background:var(--surface-2);
-  color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.92rem;
-  font-weight:400;cursor:pointer;text-align:left;
+  display:flex;align-items:center;gap:.8rem;padding:.85rem 1rem;
+  border-radius:var(--radius-sm);border:1.5px solid var(--border);
+  background:var(--surface-2);color:var(--ink);font-family:'DM Sans',sans-serif;
+  font-size:.92rem;font-weight:400;cursor:pointer;text-align:left;
   transition:all var(--tr);
 }
-.option-btn:hover:not(:disabled){
-  border-color:var(--accent);transform:translateX(4px);box-shadow:var(--shadow-sm);
-}
+.option-btn:hover:not(:disabled){border-color:var(--accent);transform:translateX(4px);box-shadow:var(--shadow-sm);}
 .option-key{
   width:26px;height:26px;border-radius:7px;background:var(--bg-2);color:var(--ink-3);
   font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;
@@ -287,23 +285,20 @@ body{
 .option-btn.wrong{border-color:var(--wrong);background:var(--wrong-bg);color:var(--wrong);}
 .option-btn.wrong .option-key{background:var(--wrong);color:#fff;}
 .option-btn:disabled{cursor:not-allowed;opacity:.75;}
-
-/* Skip row */
 .skip-row{display:flex;align-items:center;justify-content:space-between;}
 .btn-skip{
-  display:inline-flex;align-items:center;gap:.35rem;
-  padding:.45rem .9rem;border-radius:var(--radius-pill);
-  border:1.5px solid var(--border);background:transparent;color:var(--ink-3);
-  font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:500;
-  cursor:pointer;transition:all var(--tr);
+  display:inline-flex;align-items:center;gap:.35rem;padding:.45rem .9rem;
+  border-radius:var(--radius-pill);border:1.5px solid var(--border);
+  background:transparent;color:var(--ink-3);font-family:'DM Sans',sans-serif;
+  font-size:.8rem;font-weight:500;cursor:pointer;transition:all var(--tr);
 }
 .btn-skip:hover{border-color:var(--skip-color);color:var(--skip-color);background:var(--skip-bg);}
 .skip-penalty{font-size:.72rem;color:var(--wrong);}
-.keyboard-hint{font-size:.72rem;color:var(--ink-3);letter-spacing:.02em;}
+.keyboard-hint{font-size:.72rem;color:var(--ink-3);}
 
-/* ══════════════════════
+/* ════════════════════════════════════════
    RESULT
-══════════════════════ */
+════════════════════════════════════════ */
 .result-card{
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--radius);box-shadow:var(--shadow);
@@ -312,15 +307,9 @@ body{
 }
 .result-emoji{font-size:3.5rem;line-height:1;margin-bottom:1rem;animation:bouncePop .5s .2s both;}
 @keyframes bouncePop{0%{transform:scale(.5);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
-.result-name{
-  font-family:'Playfair Display',serif;font-size:clamp(1.35rem,4vw,1.7rem);
-  font-weight:700;color:var(--ink);margin-bottom:1.4rem;
-}
+.result-name{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,4vw,1.7rem);font-weight:700;color:var(--ink);margin-bottom:1.4rem;}
 .score-display{display:flex;align-items:baseline;justify-content:center;gap:.15rem;margin-bottom:.75rem;}
-.score-big{
-  font-family:'Playfair Display',serif;font-size:clamp(3.5rem,12vw,5rem);
-  font-weight:900;color:var(--accent);line-height:1;
-}
+.score-big{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,12vw,5rem);font-weight:900;color:var(--accent);line-height:1;}
 .score-denom{font-size:1.5rem;font-weight:300;color:var(--ink-3);}
 .result-msg{font-size:1rem;color:var(--ink-2);margin-bottom:1.75rem;}
 .stats-row{display:flex;gap:.75rem;justify-content:center;margin-bottom:2rem;}
@@ -331,25 +320,36 @@ body{
 }
 .stat-num{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--ink);}
 .stat-label{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);}
+
+/* Rank badge on result */
+.rank-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--gold-bg);border:1.5px solid var(--gold);
+  border-radius:var(--radius-pill);padding:.4rem 1rem;
+  font-size:.85rem;font-weight:600;color:var(--gold);
+  margin-bottom:1.5rem;
+}
+
 .result-actions{display:flex;flex-direction:column;}
 
-/* ══════════════════════
-   LEADERBOARD MODAL
-══════════════════════ */
+/* ════════════════════════════════════════
+   LEADERBOARD MODAL — GLOBAL
+════════════════════════════════════════ */
 .modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.45);
-  backdrop-filter:blur(6px);z-index:500;
-  display:flex;align-items:center;justify-content:center;
-  padding:1.5rem;animation:fadeIn .25s ease both;
+  position:fixed;inset:0;background:rgba(0,0,0,.5);
+  backdrop-filter:blur(8px);z-index:500;
+  display:flex;align-items:center;justify-content:center;padding:1.5rem;
+  animation:fadeIn .25s ease both;
 }
 .modal-overlay.hidden{display:none;}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .modal-card{
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--radius);box-shadow:var(--shadow);
-  padding:2rem;width:100%;max-width:400px;animation:fadeUp .3s ease both;
+  padding:2rem;width:100%;max-width:440px;
+  animation:fadeUp .3s ease both;max-height:90vh;overflow-y:auto;
 }
-.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;}
 .modal-title{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;color:var(--ink);}
 .modal-close{
   width:32px;height:32px;border-radius:50%;border:1.5px solid var(--border);
@@ -357,20 +357,93 @@ body{
   display:flex;align-items:center;justify-content:center;transition:all var(--tr);
 }
 .modal-close:hover{border-color:var(--wrong);color:var(--wrong);}
-.leaderboard-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;}
-.leaderboard-list li{
-  display:flex;align-items:center;gap:.75rem;padding:.75rem .9rem;
-  background:var(--surface-2);border:1.5px solid var(--border);
-  border-radius:var(--radius-sm);font-size:.9rem;color:var(--ink);
-}
-.lb-rank{font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--accent);width:22px;text-align:center;flex-shrink:0;}
-.lb-name{flex:1;font-weight:500;}
-.lb-score{font-weight:700;color:var(--accent);}
-.lb-date{font-size:.72rem;color:var(--ink-3);}
-.lb-empty{text-align:center;color:var(--ink-3);font-size:.9rem;padding:1rem;}
-.hidden-el{display:none;}
 
-/* ── Utilities ── */
+.lb-subtitle{font-size:.78rem;color:var(--ink-3);margin-bottom:1.25rem;display:flex;align-items:center;gap:.4rem;}
+.lb-dot{width:7px;height:7px;border-radius:50%;background:var(--correct);animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+
+.lb-tabs{display:flex;gap:.5rem;margin-bottom:1.25rem;}
+.lb-tab{
+  flex:1;padding:.5rem;border-radius:var(--radius-sm);
+  border:1.5px solid var(--border);background:var(--surface-2);
+  color:var(--ink-3);font-family:'DM Sans',sans-serif;font-size:.8rem;
+  font-weight:600;cursor:pointer;transition:all var(--tr);text-align:center;
+}
+.lb-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+.leaderboard-list{list-style:none;display:flex;flex-direction:column;gap:.45rem;}
+.lb-row{
+  display:flex;align-items:center;gap:.75rem;padding:.7rem .9rem;
+  background:var(--surface-2);border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);font-size:.88rem;color:var(--ink);
+  transition:all var(--tr);
+}
+.lb-row.is-you{border-color:var(--accent);background:var(--accent-soft);}
+.lb-row.top-1{border-color:#FFD700;background:rgba(255,215,0,.07);}
+.lb-row.top-2{border-color:#C0C0C0;background:rgba(192,192,192,.07);}
+.lb-row.top-3{border-color:#CD7F32;background:rgba(205,127,50,.07);}
+.lb-rank{font-family:'Playfair Display',serif;font-weight:700;font-size:.95rem;width:22px;text-align:center;flex-shrink:0;}
+.lb-name{flex:1;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.lb-score-val{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;margin-right:.3rem;}
+.lb-pct{font-size:.72rem;color:var(--ink-3);}
+.lb-date{font-size:.7rem;color:var(--ink-3);flex-shrink:0;}
+.lb-you-tag{
+  font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  background:var(--accent);color:#fff;padding:.1rem .4rem;border-radius:4px;flex-shrink:0;
+}
+
+.lb-loading{
+  display:flex;flex-direction:column;align-items:center;gap:1rem;padding:2rem 0;
+  color:var(--ink-3);font-size:.9rem;
+}
+.lb-loading .mini-spin{
+  width:28px;height:28px;border-radius:50%;
+  border:2.5px solid var(--border);border-top-color:var(--accent);
+  animation:spin .7s linear infinite;
+}
+.lb-empty{text-align:center;color:var(--ink-3);font-size:.9rem;padding:1.5rem;line-height:1.6;}
+.lb-error{text-align:center;color:var(--wrong);font-size:.85rem;padding:1.5rem;line-height:1.6;}
+.lb-error code{display:block;font-size:.75rem;color:var(--ink-3);margin-top:.4rem;word-break:break-all;}
+
+/* ════════════════════════════════════════
+   SETUP MODAL
+════════════════════════════════════════ */
+.setup-modal-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:2rem;width:100%;max-width:480px;
+  animation:fadeUp .3s ease both;max-height:90vh;overflow-y:auto;
+}
+.step-list{list-style:none;display:flex;flex-direction:column;gap:.75rem;margin:1rem 0;}
+.step-list li{
+  display:flex;align-items:flex-start;gap:.75rem;font-size:.88rem;
+  color:var(--ink-2);line-height:1.55;
+}
+.step-num{
+  width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;
+  font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  margin-top:.1rem;
+}
+.url-input-wrap{margin:1rem 0;}
+.url-input{
+  width:100%;padding:.75rem 1rem;border-radius:var(--radius-sm);
+  border:1.5px solid var(--border);background:var(--surface-2);
+  color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;
+  transition:border-color var(--tr),box-shadow var(--tr);
+}
+.url-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+.url-input::placeholder{color:var(--ink-3);}
+.btn-sm{
+  padding:.6rem 1.1rem;border-radius:var(--radius-sm);border:none;
+  background:var(--accent);color:#fff;font-family:'DM Sans',sans-serif;
+  font-size:.88rem;font-weight:600;cursor:pointer;
+  transition:background var(--tr),transform .15s;
+}
+.btn-sm:hover{background:var(--accent-2);transform:translateY(-1px);}
+
+/* ════════════════════════════════════════
+   UTILITIES
+════════════════════════════════════════ */
 .shake{animation:shake .4s cubic-bezier(.36,.07,.19,.97) both;}
 @keyframes shake{10%,90%{transform:translateX(-3px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-5px)}40%,60%{transform:translateX(5px)}}
 .score-pop{animation:bouncePop .4s ease both;}
@@ -379,22 +452,30 @@ body{
   .landing-card,.quiz-card,.result-card{padding:1.75rem 1.5rem;}
   .keyboard-hint{display:none;}
   .stats-row{gap:.5rem;}
+  .lb-date{display:none;}
 }
 </style>
 </head>
 <body>
 
-<!-- Dark mode toggle -->
 <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
   <span id="themeIcon">☽</span>
 </button>
 
-<!-- ══ SCREEN 1 — LANDING ══ -->
+<!-- ══════════ SCREEN: LANDING ══════════ -->
 <section class="screen" id="screenLanding">
   <div class="landing-card">
-    <div class="brand-badge">Quiz App</div>
+    <div class="brand-badge">Global Quiz</div>
     <h1 class="brand-title">Biju<span class="accent">Asks</span></h1>
-    <p class="brand-tagline">Test your knowledge. Beat your best.</p>
+    <p class="brand-tagline">Compete with players worldwide 🌍</p>
+
+    <!-- Firebase setup notice (shown if not configured) -->
+    <div class="setup-notice" id="setupNotice" style="display:none">
+      <div class="setup-notice-title">⚡ One-time Setup for Global Leaderboard</div>
+      <p>Add your free Firebase URL to enable global scores.
+        <button onclick="openSetupModal()" style="background:none;border:none;color:var(--accent);font-weight:600;cursor:pointer;font-size:.8rem;text-decoration:underline;padding:0;">Configure now →</button>
+      </p>
+    </div>
 
     <div class="input-group">
       <label for="nameInput" class="input-label">What shall we call you?</label>
@@ -418,11 +499,11 @@ body{
       <span>Start Quiz</span>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
     </button>
-    <button class="btn-ghost" id="btnLeaderboard1">🏆 Leaderboard</button>
+    <button class="btn-ghost" id="btnLB1">🌍 Global Leaderboard</button>
   </div>
 </section>
 
-<!-- ══ SCREEN 1.5 — LOADING ══ -->
+<!-- ══════════ SCREEN: LOADING ══════════ -->
 <section class="screen hidden" id="screenLoading">
   <div class="loading-card">
     <div class="loader-ring"></div>
@@ -430,7 +511,7 @@ body{
   </div>
 </section>
 
-<!-- ══ SCREEN 2 — QUIZ ══ -->
+<!-- ══════════ SCREEN: QUIZ ══════════ -->
 <section class="screen hidden" id="screenQuiz">
   <div class="quiz-card">
     <div class="quiz-topbar">
@@ -440,7 +521,6 @@ body{
       </div>
       <div class="score-chip" id="liveScore">Score: 0</div>
     </div>
-
     <div class="progress-row">
       <span class="progress-label" id="progressLabel">Question 1 of 10</span>
       <span class="category-tag" id="qCatTag">Tech</span>
@@ -448,7 +528,6 @@ body{
     <div class="progress-bar-track">
       <div class="progress-bar-fill" id="progressFill"></div>
     </div>
-
     <div class="timer-row">
       <div class="timer-arc-wrap">
         <svg class="timer-arc" viewBox="0 0 48 48">
@@ -459,18 +538,13 @@ body{
       </div>
       <div class="timer-label-group">
         <span class="timer-hint">seconds left</span>
-        <div class="timer-bar-track">
-          <div class="timer-bar-fill" id="timerBar"></div>
-        </div>
+        <div class="timer-bar-track"><div class="timer-bar-fill" id="timerBar"></div></div>
       </div>
     </div>
-
     <div class="question-wrap" id="questionWrap">
       <p class="question-text" id="questionText">…</p>
     </div>
-
     <div class="options-grid" id="optionsGrid"></div>
-
     <div class="skip-row">
       <button class="btn-skip" id="skipBtn">Skip <span class="skip-penalty">(−1 pt)</span></button>
       <span class="keyboard-hint">Keys 1–4 • S to skip</span>
@@ -478,7 +552,7 @@ body{
   </div>
 </section>
 
-<!-- ══ SCREEN 3 — RESULT ══ -->
+<!-- ══════════ SCREEN: RESULT ══════════ -->
 <section class="screen hidden" id="screenResult">
   <div class="result-card">
     <div class="result-emoji" id="resultEmoji">🎉</div>
@@ -488,6 +562,9 @@ body{
       <span class="score-denom" id="scoreDenom">/10</span>
     </div>
     <p class="result-msg" id="resultMsg">Great performance!</p>
+    <div class="rank-badge" id="rankBadge" style="display:none">
+      🏆 <span id="rankText">Ranked #1 globally</span>
+    </div>
     <div class="stats-row">
       <div class="stat-box"><span class="stat-num" id="statCorrect">0</span><span class="stat-label">Correct</span></div>
       <div class="stat-box"><span class="stat-num" id="statWrong">0</span><span class="stat-label">Wrong</span></div>
@@ -498,35 +575,196 @@ body{
         <span>Play Again</span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.2"/></svg>
       </button>
-      <button class="btn-ghost" id="btnLeaderboard2">🏆 Leaderboard</button>
+      <button class="btn-ghost" id="btnLB2">🌍 Global Leaderboard</button>
     </div>
   </div>
 </section>
 
-<!-- ══ LEADERBOARD MODAL ══ -->
-<div class="modal-overlay hidden" id="leaderboardModal">
+<!-- ══════════ MODAL: GLOBAL LEADERBOARD ══════════ -->
+<div class="modal-overlay hidden" id="lbModal">
   <div class="modal-card">
     <div class="modal-header">
-      <h3 class="modal-title">🏆 Top Scores</h3>
-      <button class="modal-close" id="closeModal">✕</button>
+      <h3 class="modal-title">🌍 Global Leaderboard</h3>
+      <button class="modal-close" id="closeLB">✕</button>
     </div>
-    <ol class="leaderboard-list" id="lbList"></ol>
-    <p class="lb-empty hidden-el" id="lbEmpty">No scores yet. Be the first!</p>
+    <div class="lb-subtitle">
+      <span class="lb-dot"></span>
+      <span id="lbSubtitle">Live scores from all players</span>
+    </div>
+    <div class="lb-tabs">
+      <button class="lb-tab active" data-period="all" id="tabAll">All Time</button>
+      <button class="lb-tab" data-period="today">Today</button>
+      <button class="lb-tab" data-period="week">This Week</button>
+    </div>
+    <ul class="leaderboard-list" id="lbList">
+      <li class="lb-loading"><div class="mini-spin"></div><span>Loading scores…</span></li>
+    </ul>
   </div>
 </div>
 
-<!-- Confetti canvas -->
+<!-- ══════════ MODAL: FIREBASE SETUP ══════════ -->
+<div class="modal-overlay hidden" id="setupModal">
+  <div class="setup-modal-card">
+    <div class="modal-header">
+      <h3 class="modal-title">⚡ Firebase Setup</h3>
+      <button class="modal-close" onclick="document.getElementById('setupModal').classList.add('hidden')">✕</button>
+    </div>
+    <p style="font-size:.88rem;color:var(--ink-2);margin-bottom:.25rem;line-height:1.6;">
+      Connect a free Firebase Realtime Database to enable global leaderboard. Takes ~2 minutes.
+    </p>
+    <ol class="step-list">
+      <li><span class="step-num">1</span><span>Go to <strong>console.firebase.google.com</strong> → Create a project (name it anything)</span></li>
+      <li><span class="step-num">2</span><span>Click <strong>Build → Realtime Database → Create Database</strong> → choose any location → Start in <strong>test mode</strong></span></li>
+      <li><span class="step-num">3</span><span>Copy your database URL — it looks like:<br><code style="font-size:.78rem;color:var(--accent);word-break:break-all;">https://YOUR-PROJECT-default-rtdb.firebaseio.com</code></span></li>
+      <li><span class="step-num">4</span><span>Paste it below and click Save</span></li>
+    </ol>
+    <div class="url-input-wrap">
+      <label class="input-label">Firebase Database URL</label>
+      <input type="url" class="url-input" id="fbUrlInput" placeholder="https://your-app-default-rtdb.firebaseio.com" />
+    </div>
+    <div style="display:flex;gap:.75rem;margin-top:.5rem;">
+      <button class="btn-sm" onclick="saveFirebaseUrl()">Save & Connect</button>
+      <button class="btn-sm" onclick="document.getElementById('setupModal').classList.add('hidden')" style="background:var(--surface-2);color:var(--ink-2);border:1.5px solid var(--border);">Cancel</button>
+    </div>
+    <p id="fbSaveMsg" style="font-size:.8rem;margin-top:.75rem;color:var(--correct);display:none;">✓ Saved! Reload the page to activate.</p>
+  </div>
+</div>
+
 <canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;"></canvas>
 
-<!-- ══════════════════════════════════════════════════
+<!-- ══════════════════════════════════════════
      JAVASCRIPT
-══════════════════════════════════════════════════ -->
+══════════════════════════════════════════ -->
 <script>
 'use strict';
 
-/* ─── Question bank ─────────────────────────── */
+/* ─────────────────────────────────────────
+   FIREBASE CONFIG
+   User pastes their Realtime DB URL here,
+   OR sets it via the in-app setup modal.
+   It is stored in localStorage for persistence.
+───────────────────────────────────────── */
+const FB_STORAGE_KEY = 'bq_firebase_url';
+
+function getFirebaseUrl() {
+  // Priority: localStorage > hardcoded fallback
+  return localStorage.getItem(FB_STORAGE_KEY) || '';
+  // ← Or hardcode it here like:
+  // return 'https://YOUR-PROJECT-default-rtdb.firebaseio.com';
+}
+
+function isFirebaseConfigured() {
+  const url = getFirebaseUrl();
+  return url && url.startsWith('https://') && url.includes('firebaseio.com');
+}
+
+/* ─────────────────────────────────────────
+   FIREBASE REST API HELPERS
+   We use Firebase's REST API (no SDK needed)
+   Endpoints:
+     GET    /leaderboard.json?orderBy="score"...
+     POST   /leaderboard.json  { body }
+───────────────────────────────────────── */
+async function fbPost(path, data) {
+  const url = `${getFirebaseUrl()}${path}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error(`Firebase error ${res.status}`);
+  return res.json();
+}
+
+async function fbGet(path, params = '') {
+  const url = `${getFirebaseUrl()}${path}?${params}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Firebase error ${res.status}`);
+  return res.json();
+}
+
+/* Post a score to Firebase */
+async function postScore(name, score, total, category) {
+  if (!isFirebaseConfigured()) return;
+  try {
+    await fbPost('/leaderboard.json', {
+      name,
+      score,
+      total,
+      pct: parseFloat((score / total * 100).toFixed(1)),
+      category,
+      ts: Date.now()
+    });
+  } catch(e) {
+    console.warn('Could not save to Firebase:', e.message);
+  }
+}
+
+/* Fetch scores from Firebase, sorted and limited */
+async function fetchScores(period = 'all') {
+  if (!isFirebaseConfigured()) {
+    throw new Error('NOT_CONFIGURED');
+  }
+
+  // Firebase REST: orderBy + limitToLast
+  // We fetch ordered by "pct" descending (workaround: fetch all, sort client-side)
+  const data = await fbGet('/leaderboard.json',
+    'orderBy="ts"&limitToLast=200'
+  );
+
+  if (!data) return [];
+
+  let entries = Object.values(data);
+
+  // Filter by period
+  if (period !== 'all') {
+    const now = Date.now();
+    const cutoff = period === 'today'
+      ? now - 86400000           // 24h
+      : now - 7 * 86400000;     // 7d
+    entries = entries.filter(e => e.ts >= cutoff);
+  }
+
+  // Sort by pct desc, then score desc
+  entries.sort((a, b) => (b.pct - a.pct) || (b.score - a.score));
+
+  return entries.slice(0, 50); // top 50
+}
+
+/* ─────────────────────────────────────────
+   SETUP MODAL LOGIC
+───────────────────────────────────────── */
+function openSetupModal() {
+  const el = document.getElementById('fbUrlInput');
+  el.value = getFirebaseUrl();
+  document.getElementById('setupModal').classList.remove('hidden');
+}
+
+function saveFirebaseUrl() {
+  const val = document.getElementById('fbUrlInput').value.trim().replace(/\/$/, '');
+  if (!val.startsWith('https://') || !val.includes('firebaseio.com')) {
+    document.getElementById('fbUrlInput').classList.add('shake');
+    setTimeout(() => document.getElementById('fbUrlInput').classList.remove('shake'), 500);
+    return;
+  }
+  localStorage.setItem(FB_STORAGE_KEY, val);
+  document.getElementById('fbSaveMsg').style.display = 'block';
+  checkSetupNotice();
+  setTimeout(() => {
+    document.getElementById('setupModal').classList.add('hidden');
+    document.getElementById('fbSaveMsg').style.display = 'none';
+  }, 1800);
+}
+
+function checkSetupNotice() {
+  document.getElementById('setupNotice').style.display =
+    isFirebaseConfigured() ? 'none' : 'block';
+}
+
+/* ─────────────────────────────────────────
+   QUESTION BANK
+───────────────────────────────────────── */
 const QB = [
-  // TECH
   {q:"What does 'HTTP' stand for?",o:["HyperText Transfer Protocol","High-Traffic Transfer Process","Hyper Terminal Text Protocol","HyperLink Transmission Protocol"],a:0,c:'tech'},
   {q:"Which language is called the 'language of the web'?",o:["Python","Java","JavaScript","Ruby"],a:2,c:'tech'},
   {q:"What does 'CSS' stand for?",o:["Computer Style Sheets","Cascading Style Sheets","Creative Style System","Coded Style Syntax"],a:1,c:'tech'},
@@ -537,7 +775,6 @@ const QB = [
   {q:"What does 'API' stand for?",o:["Automated Program Interface","Application Programming Interface","Advanced Protocol Integration","Applied Program Instruction"],a:1,c:'tech'},
   {q:"In Git, which command creates a new branch?",o:["git merge","git commit","git branch","git push"],a:2,c:'tech'},
   {q:"Which HTML tag is used for the largest heading?",o:["<h6>","<head>","<h1>","<title>"],a:2,c:'tech'},
-  // SCIENCE
   {q:"Chemical symbol for gold?",o:["Gd","Go","Ag","Au"],a:3,c:'science'},
   {q:"Speed of light in a vacuum (approximately)?",o:["300,000 km/s","150,000 km/s","450,000 km/s","3,000 km/s"],a:0,c:'science'},
   {q:"How many bones in the adult human body?",o:["196","206","216","186"],a:1,c:'science'},
@@ -546,14 +783,12 @@ const QB = [
   {q:"Atomic number of Carbon?",o:["8","4","6","12"],a:2,c:'science'},
   {q:"What gas do plants absorb during photosynthesis?",o:["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],a:2,c:'science'},
   {q:"Hardest natural substance on Earth?",o:["Gold","Quartz","Iron","Diamond"],a:3,c:'science'},
-  // GENERAL
   {q:"Capital of France?",o:["Berlin","Madrid","Rome","Paris"],a:3,c:'general'},
   {q:"How many continents are on Earth?",o:["5","6","7","8"],a:2,c:'general'},
   {q:"Who painted the Mona Lisa?",o:["Michelangelo","Raphael","Leonardo da Vinci","Caravaggio"],a:2,c:'general'},
   {q:"Largest ocean on Earth?",o:["Atlantic","Indian","Arctic","Pacific"],a:3,c:'general'},
   {q:"Year World War II ended?",o:["1943","1944","1945","1946"],a:2,c:'general'},
   {q:"Longest river in the world?",o:["Amazon","Nile","Yangtze","Mississippi"],a:1,c:'general'},
-  // MATH
   {q:"Value of π to two decimal places?",o:["3.12","3.16","3.14","3.18"],a:2,c:'math'},
   {q:"Square root of 144?",o:["11","12","13","14"],a:1,c:'math'},
   {q:"A triangle has angles 60° and 80°. What is the third?",o:["30°","40°","50°","60°"],a:1,c:'math'},
@@ -566,273 +801,270 @@ const TOTAL_Q   = 10;
 const TIMER_SEC = 15;
 const CAT_LABEL = {tech:'💻 Tech',science:'🔬 Science',general:'🌍 General',math:'🔢 Math',all:'All'};
 
-/* ─── State ──────────────────────────────────── */
+/* ─────────────────────────────────────────
+   STATE
+───────────────────────────────────────── */
 let S = {
   name:'', category:'all', questions:[],
   idx:0, score:0, correct:0, wrong:0, skipped:0,
-  timerId:null, timeLeft:TIMER_SEC, answered:false
+  timerId:null, timeLeft:TIMER_SEC, answered:false,
+  currentPeriod: 'all',
+  lastSubmittedEntry: null,
 };
 
-/* ─── Helpers ────────────────────────────────── */
-const $   = id => document.getElementById(id);
-const esc = s  => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* ─────────────────────────────────────────
+   HELPERS
+───────────────────────────────────────── */
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){
-    const j=Math.floor(Math.random()*(i+1));
-    [a[i],a[j]]=[a[j],a[i]];
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i],a[j]] = [a[j],a[i]];
   }
   return a;
 }
 
-/* ─── Screen manager ─────────────────────────── */
 const SCREENS = ['screenLanding','screenLoading','screenQuiz','screenResult'];
-function show(id){
+function show(id) {
   SCREENS.forEach(s => {
-    const el = $(s);
-    if(s === id) el.classList.remove('hidden');
-    else         el.classList.add('hidden');
+    $(s).classList[s === id ? 'remove' : 'add']('hidden');
   });
 }
 
-/* ─── Dark mode ──────────────────────────────── */
-function applyTheme(dark){
+function fmtDate(ts) {
+  const d = new Date(ts);
+  const now = new Date();
+  const diffH = (now - d) / 3600000;
+  if (diffH < 1) return `${Math.round(diffH * 60)}m ago`;
+  if (diffH < 24) return `${Math.round(diffH)}h ago`;
+  return d.toLocaleDateString('en-GB', {day:'2-digit', month:'short'});
+}
+
+/* ─────────────────────────────────────────
+   DARK MODE
+───────────────────────────────────────── */
+function applyTheme(dark) {
   document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
   $('themeIcon').textContent = dark ? '☀' : '☽';
   localStorage.setItem('bq_dark', dark ? '1' : '0');
 }
 applyTheme(localStorage.getItem('bq_dark') === '1');
-$('themeToggle').addEventListener('click', () => {
-  applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
-});
+$('themeToggle').addEventListener('click', () =>
+  applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark')
+);
 
-/* ─── Sound (Web Audio) ──────────────────────── */
+/* ─────────────────────────────────────────
+   SOUND
+───────────────────────────────────────── */
 let actx = null;
-function beep(freq, type, dur, vol=0.15){
-  try{
-    if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)();
+function beep(freq, type, dur, vol=0.15) {
+  try {
+    if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
     const o=actx.createOscillator(), g=actx.createGain();
     o.connect(g); g.connect(actx.destination);
     o.type=type; o.frequency.value=freq;
-    g.gain.setValueAtTime(vol,actx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+dur);
+    g.gain.setValueAtTime(vol, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime+dur);
     o.start(); o.stop(actx.currentTime+dur);
-  }catch(e){}
+  } catch(e) {}
 }
-const sndOk   = ()=>{ beep(523,'sine',.12); setTimeout(()=>beep(659,'sine',.18),75); };
-const sndBad  = ()=>  beep(200,'sawtooth',.2,.1);
-const sndTick = ()=>  beep(900,'sine',.05,.05);
+const sndOk   = () => { beep(523,'sine',.12); setTimeout(()=>beep(659,'sine',.18),75); };
+const sndBad  = () =>   beep(200,'sawtooth',.2,.1);
+const sndTick = () =>   beep(900,'sine',.05,.05);
 
-/* ─── Leaderboard ────────────────────────────── */
-const LB_KEY = 'bq_leaderboard';
-function getLB(){ try{return JSON.parse(localStorage.getItem(LB_KEY))||[];}catch{return[];} }
-function saveLB(name,score,total){
-  const lb=getLB();
-  lb.push({name,score,total,ts:Date.now()});
-  lb.sort((a,b)=>(b.score/b.total)-(a.score/a.total)||b.score-a.score);
-  localStorage.setItem(LB_KEY,JSON.stringify(lb.slice(0,10)));
-}
-function renderLB(){
-  const lb=$('lbList'), em=$('lbEmpty'), data=getLB();
-  lb.innerHTML='';
-  if(!data.length){ em.classList.remove('hidden-el'); return; }
-  em.classList.add('hidden-el');
-  const medals=['🥇','🥈','🥉'];
-  data.forEach((e,i)=>{
-    const li=document.createElement('li');
-    const d=new Date(e.ts);
-    const dt=d.toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
-    li.innerHTML=`<span class="lb-rank">${medals[i]||i+1}</span><span class="lb-name">${esc(e.name)}</span><span class="lb-score">${e.score}/${e.total}</span><span class="lb-date">${dt}</span>`;
-    lb.appendChild(li);
-  });
-}
-
-/* ─── Last score banner ──────────────────────── */
-function refreshBanner(){
-  try{
-    const ls=localStorage.getItem('bq_last');
-    if(ls){
-      const {name,score,total}=JSON.parse(ls);
-      $('lastScoreBanner').textContent=`Last: ${esc(name)} scored ${score}/${total}`;
-      $('lastScoreBanner').style.display='block';
+/* ─────────────────────────────────────────
+   LAST SCORE BANNER
+───────────────────────────────────────── */
+function refreshBanner() {
+  try {
+    const ls = localStorage.getItem('bq_last');
+    if (ls) {
+      const {name, score, total} = JSON.parse(ls);
+      $('lastScoreBanner').textContent = `↩ Last: ${esc(name)} scored ${score}/${total}`;
+      $('lastScoreBanner').style.display = 'block';
     }
-  }catch(e){}
+  } catch(e) {}
 }
 
-/* ─── Category pills ─────────────────────────── */
-$('categoryPills').addEventListener('click',e=>{
-  const p=e.target.closest('.pill');
-  if(!p) return;
-  document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+/* ─────────────────────────────────────────
+   CATEGORY PILLS
+───────────────────────────────────────── */
+$('categoryPills').addEventListener('click', e => {
+  const p = e.target.closest('.pill');
+  if (!p) return;
+  document.querySelectorAll('.pill').forEach(x => x.classList.remove('active'));
   p.classList.add('active');
-  S.category=p.dataset.cat;
+  S.category = p.dataset.cat;
 });
 
-/* ─── START QUIZ ─────────────────────────────── */
+/* ─────────────────────────────────────────
+   START QUIZ
+───────────────────────────────────────── */
 $('startBtn').addEventListener('click', startQuiz);
-$('nameInput').addEventListener('keydown', e=>{ if(e.key==='Enter') startQuiz(); });
+$('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') startQuiz(); });
 
-function startQuiz(){
+function startQuiz() {
   const name = $('nameInput').value.trim();
-  if(!name){
+  if (!name) {
     $('nameInput').classList.add('shake');
-    setTimeout(()=>$('nameInput').classList.remove('shake'),500);
+    setTimeout(() => $('nameInput').classList.remove('shake'), 500);
     $('nameInput').focus();
     return;
   }
   S.name = name;
 
-  // Build question pool
-  const pool = S.category==='all' ? QB : QB.filter(q=>q.c===S.category);
-  const src  = pool.length >= TOTAL_Q ? pool : QB;   // fallback to all if not enough
-  S.questions = shuffle(src).slice(0, TOTAL_Q);
-
-  // Reset counters
+  const pool = S.category === 'all' ? QB : QB.filter(q => q.c === S.category);
+  S.questions = shuffle(pool.length >= TOTAL_Q ? pool : QB).slice(0, TOTAL_Q);
   S.idx=0; S.score=0; S.correct=0; S.wrong=0; S.skipped=0;
+  S.lastSubmittedEntry = null;
 
-  // Loading
   show('screenLoading');
-  const msgs=['Shuffling questions…','Charging brain cells…','Polishing trivia gems…','Almost ready…'];
-  let mi=0;
-  const t=setInterval(()=>{ $('loadingText').textContent=msgs[++mi%msgs.length]; },420);
-
-  setTimeout(()=>{
+  const msgs = ['Shuffling questions…','Charging brain cells…','Polishing trivia gems…','Almost ready…'];
+  let mi = 0;
+  const t = setInterval(() => { $('loadingText').textContent = msgs[++mi % msgs.length]; }, 420);
+  setTimeout(() => {
     clearInterval(t);
-    setupQuizHeader();
+    $('userAvatar').textContent = name.charAt(0).toUpperCase();
+    $('quizUserName').textContent = name;
+    $('liveScore').textContent = 'Score: 0';
     show('screenQuiz');
     renderQ();
-  }, 1600);
+  }, 1500);
 }
 
-function setupQuizHeader(){
-  $('quizUserName').textContent = S.name;
-  $('userAvatar').textContent   = S.name.charAt(0).toUpperCase();
-  $('liveScore').textContent    = 'Score: 0';
-}
-
-/* ─── RENDER QUESTION ────────────────────────── */
-function renderQ(){
+/* ─────────────────────────────────────────
+   RENDER QUESTION
+───────────────────────────────────────── */
+function renderQ() {
   const q = S.questions[S.idx];
   S.answered = false;
 
-  // Progress
-  $('progressLabel').textContent  = `Question ${S.idx+1} of ${S.questions.length}`;
-  $('progressFill').style.width   = `${(S.idx/S.questions.length)*100}%`;
-  $('qCatTag').textContent        = CAT_LABEL[q.c]||q.c;
+  $('progressLabel').textContent = `Question ${S.idx+1} of ${S.questions.length}`;
+  $('progressFill').style.width  = `${(S.idx / S.questions.length) * 100}%`;
+  $('qCatTag').textContent       = CAT_LABEL[q.c] || q.c;
 
-  // Question animation
-  const wrap=$('questionWrap');
+  const wrap = $('questionWrap');
   wrap.classList.remove('q-enter');
   void wrap.offsetWidth;
   wrap.classList.add('q-enter');
   $('questionText').textContent = q.q;
 
-  // Build options
-  const grid=$('optionsGrid');
-  grid.innerHTML='';
-  ['1','2','3','4'].forEach((k,i)=>{
-    const btn=document.createElement('button');
-    btn.className='option-btn';
-    btn.dataset.i=i;
-    btn.innerHTML=`<span class="option-key">${k}</span><span>${esc(q.o[i])}</span>`;
-    btn.addEventListener('click',()=>pick(i));
+  const grid = $('optionsGrid');
+  grid.innerHTML = '';
+  ['1','2','3','4'].forEach((k,i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-key">${k}</span><span>${esc(q.o[i])}</span>`;
+    btn.addEventListener('click', () => pick(i));
     grid.appendChild(btn);
   });
 
   startTimer();
 }
 
-/* ─── TIMER ──────────────────────────────────── */
-function startTimer(){
+/* ─────────────────────────────────────────
+   TIMER
+───────────────────────────────────────── */
+function startTimer() {
   stopTimer();
-  S.timeLeft=TIMER_SEC;
+  S.timeLeft = TIMER_SEC;
   updateTimerUI(TIMER_SEC);
-  S.timerId=setInterval(()=>{
+  S.timerId = setInterval(() => {
     S.timeLeft--;
     updateTimerUI(S.timeLeft);
-    if(S.timeLeft<=5&&S.timeLeft>0) sndTick();
-    if(S.timeLeft<=0){ stopTimer(); timeout(); }
-  },1000);
+    if (S.timeLeft <= 5 && S.timeLeft > 0) sndTick();
+    if (S.timeLeft <= 0) { stopTimer(); timeout(); }
+  }, 1000);
 }
-function stopTimer(){ if(S.timerId){clearInterval(S.timerId);S.timerId=null;} }
-function updateTimerUI(t){
-  const pct=t/TIMER_SEC;
-  $('timerNum').textContent=t;
-  $('timerArc').style.strokeDashoffset=125.66*(1-pct);
-  $('timerBar').style.width=`${pct*100}%`;
-  const arc=$('timerArc'), bar=$('timerBar');
+function stopTimer() {
+  if (S.timerId) { clearInterval(S.timerId); S.timerId = null; }
+}
+function updateTimerUI(t) {
+  const pct = t / TIMER_SEC;
+  $('timerNum').textContent = t;
+  $('timerArc').style.strokeDashoffset = 125.66 * (1 - pct);
+  $('timerBar').style.width = `${pct * 100}%`;
+  const arc = $('timerArc'), bar = $('timerBar');
   arc.classList.remove('warning','danger');
   bar.classList.remove('warning','danger');
-  if(t<=5){arc.classList.add('danger');bar.classList.add('danger');}
-  else if(t<=8){arc.classList.add('warning');bar.classList.add('warning');}
+  if (t <= 5)      { arc.classList.add('danger');  bar.classList.add('danger'); }
+  else if (t <= 8) { arc.classList.add('warning'); bar.classList.add('warning'); }
 }
-function timeout(){
-  if(S.answered) return;
-  S.answered=true; S.wrong++;
+function timeout() {
+  if (S.answered) return;
+  S.answered = true; S.wrong++;
   revealAnswer(-1); sndBad();
-  setTimeout(advance,1500);
+  setTimeout(advance, 1500);
 }
 
-/* ─── PICK ANSWER ────────────────────────────── */
-function pick(i){
-  if(S.answered) return;
-  S.answered=true; stopTimer();
-  const correct = i===S.questions[S.idx].a;
-  if(correct){ S.score++; S.correct++; sndOk(); }
+/* ─────────────────────────────────────────
+   PICK / SKIP
+───────────────────────────────────────── */
+function pick(i) {
+  if (S.answered) return;
+  S.answered = true; stopTimer();
+  if (i === S.questions[S.idx].a) { S.score++; S.correct++; sndOk(); }
   else { S.wrong++; sndBad(); }
   revealAnswer(i);
-  $('liveScore').textContent=`Score: ${S.score}`;
+  $('liveScore').textContent = `Score: ${S.score}`;
   $('liveScore').classList.add('score-pop');
-  setTimeout(()=>$('liveScore').classList.remove('score-pop'),400);
-  setTimeout(advance,1500);
+  setTimeout(() => $('liveScore').classList.remove('score-pop'), 400);
+  setTimeout(advance, 1500);
 }
 
-function revealAnswer(picked){
-  const btns=[...$('optionsGrid').querySelectorAll('.option-btn')];
-  btns.forEach((b,i)=>{
-    b.disabled=true;
-    if(i===S.questions[S.idx].a) b.classList.add('correct');
-    else if(i===picked)          b.classList.add('wrong');
+function revealAnswer(picked) {
+  [...$('optionsGrid').querySelectorAll('.option-btn')].forEach((b, i) => {
+    b.disabled = true;
+    if (i === S.questions[S.idx].a) b.classList.add('correct');
+    else if (i === picked)           b.classList.add('wrong');
   });
 }
 
-/* ─── SKIP ───────────────────────────────────── */
-$('skipBtn').addEventListener('click',()=>{
-  if(S.answered) return;
-  S.answered=true; stopTimer();
-  S.skipped++; S.score=Math.max(0,S.score-1);
-  $('liveScore').textContent=`Score: ${S.score}`;
+$('skipBtn').addEventListener('click', () => {
+  if (S.answered) return;
+  S.answered = true; stopTimer();
+  S.skipped++; S.score = Math.max(0, S.score - 1);
+  $('liveScore').textContent = `Score: ${S.score}`;
   revealAnswer(-1);
-  setTimeout(advance,1200);
+  setTimeout(advance, 1200);
 });
 
-/* ─── KEYBOARD ───────────────────────────────── */
-document.addEventListener('keydown',e=>{
-  if($('screenQuiz').classList.contains('hidden')) return;
-  if(e.key>='1'&&e.key<='4') pick(parseInt(e.key)-1);
-  if(e.key==='s'||e.key==='S') $('skipBtn').click();
+document.addEventListener('keydown', e => {
+  if ($('screenQuiz').classList.contains('hidden')) return;
+  if (e.key >= '1' && e.key <= '4') pick(parseInt(e.key) - 1);
+  if (e.key === 's' || e.key === 'S') $('skipBtn').click();
 });
 
-/* ─── ADVANCE ────────────────────────────────── */
-function advance(){
+function advance() {
   S.idx++;
-  if(S.idx>=S.questions.length){ endQuiz(); return; }
-  const wrap=$('questionWrap');
+  if (S.idx >= S.questions.length) { endQuiz(); return; }
+  const wrap = $('questionWrap');
   wrap.classList.remove('q-enter');
   wrap.classList.add('q-exit');
-  setTimeout(()=>{ wrap.classList.remove('q-exit'); renderQ(); },200);
+  setTimeout(() => { wrap.classList.remove('q-exit'); renderQ(); }, 200);
 }
 
-/* ─── END QUIZ ───────────────────────────────── */
-function endQuiz(){
+/* ─────────────────────────────────────────
+   END QUIZ
+───────────────────────────────────────── */
+async function endQuiz() {
   stopTimer();
-  const total=S.questions.length, pct=S.score/total;
-  $('progressFill').style.width='100%';
+  const total = S.questions.length;
+  const pct   = S.score / total;
 
-  saveLB(S.name,S.score,total);
-  localStorage.setItem('bq_last',JSON.stringify({name:S.name,score:S.score,total}));
+  $('progressFill').style.width = '100%';
 
+  // Save locally
+  localStorage.setItem('bq_last', JSON.stringify({name:S.name, score:S.score, total}));
+
+  // Post to Firebase (async, don't block UI)
+  S.lastSubmittedEntry = { name: S.name, score: S.score, total, pct: pct * 100, ts: Date.now() };
+  postScore(S.name, S.score, total, S.category);
+
+  // Result UI
   $('resultName').textContent  = `Well done, ${S.name}!`;
   $('scoreBig').textContent    = S.score;
   $('scoreDenom').textContent  = `/${total}`;
@@ -840,57 +1072,163 @@ function endQuiz(){
   $('statWrong').textContent   = S.wrong;
   $('statSkipped').textContent = S.skipped;
 
-  let msg,emoji;
-  if(pct>=.9)     {msg="Outstanding! You're a genius! 🔥";emoji='🏆';}
-  else if(pct>=.7){msg="Great job! Keep it up!";          emoji='🎉';}
-  else if(pct>=.5){msg="Good effort! You're getting there.";emoji='👍';}
-  else if(pct>=.3){msg="Keep practicing — you'll crack it!";emoji='📚';}
-  else            {msg="Don't give up! Try again!";        emoji='💪';}
+  let msg, emoji;
+  if (pct >= .9)      { msg = "Outstanding! You're a genius! 🔥"; emoji = '🏆'; }
+  else if (pct >= .7) { msg = "Great job! Keep it up!";            emoji = '🎉'; }
+  else if (pct >= .5) { msg = "Good effort! You're getting there.";emoji = '👍'; }
+  else if (pct >= .3) { msg = "Keep practicing — you'll crack it!";emoji = '📚'; }
+  else                { msg = "Don't give up! Try again!";          emoji = '💪'; }
 
-  $('resultEmoji').textContent=emoji;
-  $('resultMsg').textContent=msg;
+  $('resultEmoji').textContent = emoji;
+  $('resultMsg').textContent   = msg;
+  $('rankBadge').style.display = 'none';
+
   show('screenResult');
-  if(pct>=.7) confetti();
-}
+  if (pct >= .7) launchConfetti();
 
-/* ─── RESTART ────────────────────────────────── */
-$('restartBtn').addEventListener('click',()=>{ refreshBanner(); show('screenLanding'); });
-
-/* ─── LEADERBOARD ────────────────────────────── */
-function openLB(){ renderLB(); $('leaderboardModal').classList.remove('hidden'); }
-$('btnLeaderboard1').addEventListener('click', openLB);
-$('btnLeaderboard2').addEventListener('click', openLB);
-$('closeModal').addEventListener('click', ()=>$('leaderboardModal').classList.add('hidden'));
-$('leaderboardModal').addEventListener('click', e=>{ if(e.target===$('leaderboardModal')) $('leaderboardModal').classList.add('hidden'); });
-
-/* ─── CONFETTI ───────────────────────────────── */
-function confetti(){
-  const cv=$('confettiCanvas'), cx=cv.getContext('2d');
-  cv.width=innerWidth; cv.height=innerHeight;
-  const cols=['#c4601a','#e8843a','#f0c040','#4caf76','#5a9fd4','#e05555'];
-  const pieces=Array.from({length:130},()=>({
-    x:Math.random()*cv.width, y:Math.random()*cv.height-cv.height,
-    w:Math.random()*10+5, h:Math.random()*5+3,
-    col:cols[Math.floor(Math.random()*cols.length)],
-    a:Math.random()*Math.PI*2, sp:(Math.random()-.5)*.2,
-    vx:(Math.random()-.5)*3, vy:Math.random()*3+2
-  }));
-  let f, n=0;
-  function draw(){
-    cx.clearRect(0,0,cv.width,cv.height);
-    pieces.forEach(p=>{
-      cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);
-      cx.fillStyle=p.col;cx.globalAlpha=.85;
-      cx.fillRect(-p.w/2,-p.h/2,p.w,p.h);cx.restore();
-      p.x+=p.vx;p.y+=p.vy;p.a+=p.sp;p.vy+=.05;
-    });
-    if(++n<200) f=requestAnimationFrame(draw);
-    else cx.clearRect(0,0,cv.width,cv.height);
+  // Try to show global rank after a short delay (let Firebase settle)
+  if (isFirebaseConfigured()) {
+    setTimeout(async () => {
+      try {
+        const scores = await fetchScores('all');
+        const rank   = scores.findIndex(e =>
+          e.name === S.name && Math.abs(e.ts - S.lastSubmittedEntry.ts) < 10000
+        );
+        if (rank !== -1) {
+          $('rankText').textContent = `Ranked #${rank + 1} globally`;
+          $('rankBadge').style.display = 'inline-flex';
+        }
+      } catch(e) {}
+    }, 2000);
   }
-  cancelAnimationFrame(f); draw();
 }
 
-/* ─── INIT ───────────────────────────────────── */
+/* ─────────────────────────────────────────
+   RESTART
+───────────────────────────────────────── */
+$('restartBtn').addEventListener('click', () => { refreshBanner(); show('screenLanding'); });
+
+/* ─────────────────────────────────────────
+   LEADERBOARD MODAL
+───────────────────────────────────────── */
+function openLB() {
+  $('lbModal').classList.remove('hidden');
+  $('lbSubtitle').textContent = isFirebaseConfigured()
+    ? 'Live scores from all players worldwide'
+    : '⚠ Configure Firebase to see global scores';
+  loadLB(S.currentPeriod);
+}
+
+async function loadLB(period) {
+  S.currentPeriod = period;
+
+  // Highlight active tab
+  document.querySelectorAll('.lb-tab').forEach(t => {
+    t.classList[t.dataset.period === period ? 'add' : 'remove']('active');
+  });
+
+  // Show spinner
+  $('lbList').innerHTML = `
+    <li class="lb-loading">
+      <div class="mini-spin"></div>
+      <span>Loading…</span>
+    </li>`;
+
+  if (!isFirebaseConfigured()) {
+    $('lbList').innerHTML = `
+      <li class="lb-error">
+        Firebase is not configured yet.<br>
+        <button onclick="openSetupModal()" style="margin-top:.75rem;background:none;border:1.5px solid var(--accent);color:var(--accent);border-radius:8px;padding:.4rem .85rem;cursor:pointer;font-size:.82rem;font-weight:600;">
+          ⚡ Set up Firebase
+        </button>
+      </li>`;
+    return;
+  }
+
+  try {
+    const scores = await fetchScores(period);
+
+    if (!scores.length) {
+      $('lbList').innerHTML = `<li class="lb-empty">No scores yet for this period.<br>Be the first to play!</li>`;
+      return;
+    }
+
+    const medals = ['🥇','🥈','🥉'];
+    const html   = scores.map((e, i) => {
+      const isYou = S.name && e.name === S.name &&
+                    S.lastSubmittedEntry &&
+                    Math.abs(e.ts - S.lastSubmittedEntry.ts) < 10000;
+      const rankClass = i === 0 ? 'top-1' : i === 1 ? 'top-2' : i === 2 ? 'top-3' : '';
+      const youClass  = isYou ? 'is-you' : '';
+      return `
+        <li class="lb-row ${rankClass} ${youClass}">
+          <span class="lb-rank">${medals[i] || i+1}</span>
+          <span class="lb-name">${esc(e.name)}</span>
+          ${isYou ? '<span class="lb-you-tag">YOU</span>' : ''}
+          <span class="lb-score-val">${e.score}/${e.total}</span>
+          <span class="lb-pct">${e.pct}%</span>
+          <span class="lb-date">${fmtDate(e.ts)}</span>
+        </li>`;
+    }).join('');
+
+    $('lbList').innerHTML = html;
+  } catch(e) {
+    $('lbList').innerHTML = `
+      <li class="lb-error">
+        Couldn't load scores.<br>
+        <code>${esc(e.message)}</code><br><br>
+        Make sure your Firebase URL is correct and the database is in test mode.
+      </li>`;
+  }
+}
+
+// Tab switching
+document.querySelectorAll('.lb-tab').forEach(tab => {
+  tab.addEventListener('click', () => loadLB(tab.dataset.period));
+});
+
+$('btnLB1').addEventListener('click', openLB);
+$('btnLB2').addEventListener('click', openLB);
+$('closeLB').addEventListener('click', () => $('lbModal').classList.add('hidden'));
+$('lbModal').addEventListener('click', e => {
+  if (e.target === $('lbModal')) $('lbModal').classList.add('hidden');
+});
+$('setupModal').addEventListener('click', e => {
+  if (e.target === $('setupModal')) $('setupModal').classList.add('hidden');
+});
+
+/* ─────────────────────────────────────────
+   CONFETTI
+───────────────────────────────────────── */
+function launchConfetti() {
+  const cv = $('confettiCanvas'), cx = cv.getContext('2d');
+  cv.width = innerWidth; cv.height = innerHeight;
+  const cols = ['#c4601a','#e8843a','#f0c040','#4caf76','#5a9fd4','#e05555'];
+  const pieces = Array.from({length:130}, () => ({
+    x: Math.random()*cv.width, y: Math.random()*cv.height-cv.height,
+    w: Math.random()*10+5, h: Math.random()*5+3,
+    col: cols[Math.floor(Math.random()*cols.length)],
+    a: Math.random()*Math.PI*2, sp: (Math.random()-.5)*.2,
+    vx: (Math.random()-.5)*3, vy: Math.random()*3+2
+  }));
+  let f, n = 0;
+  (function draw() {
+    cx.clearRect(0,0,cv.width,cv.height);
+    pieces.forEach(p => {
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.a);
+      cx.fillStyle=p.col; cx.globalAlpha=.85;
+      cx.fillRect(-p.w/2,-p.h/2,p.w,p.h); cx.restore();
+      p.x+=p.vx; p.y+=p.vy; p.a+=p.sp; p.vy+=.05;
+    });
+    if (++n < 200) f = requestAnimationFrame(draw);
+    else cx.clearRect(0,0,cv.width,cv.height);
+  })();
+}
+
+/* ─────────────────────────────────────────
+   INIT
+───────────────────────────────────────── */
+checkSetupNotice();
 refreshBanner();
 show('screenLanding');
 </script>
