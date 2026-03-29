@@ -294,41 +294,80 @@ function fmtDate(ts) {
 }
 
 /* ─────────────────────────────────────────────────
-   LEADERBOARD (localStorage)
+   LEADERBOARD (Global Shared Storage)
+   Uses window.storage with shared:true so all
+   players across devices see the same board.
 ───────────────────────────────────────────────── */
-const LB_KEY = 'bijuAsks_leaderboard';
+const LB_GLOBAL_KEY = 'bijuAsks_global_leaderboard';
 
-function getLeaderboard() {
-  try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; }
-  catch { return []; }
+async function getGlobalLeaderboard() {
+  try {
+    const result = await window.storage.get(LB_GLOBAL_KEY, true);
+    return result ? JSON.parse(result.value) : [];
+  } catch {
+    return [];
+  }
 }
 
-function saveToLeaderboard(name, score, total) {
-  const lb = getLeaderboard();
-  lb.push({ name, score, total, ts: Date.now() });
-  lb.sort((a, b) => (b.score / b.total) - (a.score / a.total) || b.score - a.score);
-  const trimmed = lb.slice(0, 10);
-  localStorage.setItem(LB_KEY, JSON.stringify(trimmed));
+async function saveToLeaderboard(name, score, total) {
+  try {
+    const lb = await getGlobalLeaderboard();
+    lb.push({ name, score, total, ts: Date.now() });
+    lb.sort((a, b) => (b.score / b.total) - (a.score / a.total) || b.score - a.score);
+    const trimmed = lb.slice(0, 20); // keep top 20 globally
+    await window.storage.set(LB_GLOBAL_KEY, JSON.stringify(trimmed), true);
+  } catch (err) {
+    console.warn('Global leaderboard save failed:', err);
+    // Fallback: save to localStorage so the score isn't lost
+    try {
+      const fallback = JSON.parse(localStorage.getItem('bijuAsks_lb_fallback') || '[]');
+      fallback.push({ name, score, total, ts: Date.now() });
+      fallback.sort((a,b)=>(b.score/b.total)-(a.score/a.total)||b.score-a.score);
+      localStorage.setItem('bijuAsks_lb_fallback', JSON.stringify(fallback.slice(0,10)));
+    } catch {}
+  }
 }
 
-function renderLeaderboard() {
-  const lb   = getLeaderboard();
-  const list = $('leaderboardList');
-  const empty= $('leaderboardEmpty');
+async function renderLeaderboard() {
+  const list  = $('leaderboardList');
+  const empty = $('leaderboardEmpty');
+  list.innerHTML = '<li class="lb-loading">⏳ Loading global scores…</li>';
+  empty.classList.add('hidden');
+
+  let lb = await getGlobalLeaderboard();
+
+  // Merge any offline fallback entries
+  try {
+    const fallback = JSON.parse(localStorage.getItem('bijuAsks_lb_fallback') || '[]');
+    if (fallback.length) {
+      lb = [...lb, ...fallback];
+      lb.sort((a,b)=>(b.score/b.total)-(a.score/a.total)||b.score-a.score);
+      lb = lb.slice(0,20);
+    }
+  } catch {}
+
   list.innerHTML = '';
   if (!lb.length) { empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
+
   const medals = ['🥇','🥈','🥉'];
   lb.forEach((entry, i) => {
     const li = document.createElement('li');
+    const pct = Math.round((entry.score / entry.total) * 100);
     li.innerHTML = `
-      <span class="lb-rank">${medals[i] || i+1}</span>
+      <span class="lb-rank">${medals[i] || i + 1}</span>
       <span class="lb-name">${escHtml(entry.name)}</span>
-      <span class="lb-score">${entry.score}/${entry.total}</span>
+      <span class="lb-score">${entry.score}/${entry.total} <small class="lb-pct">(${pct}%)</small></span>
       <span class="lb-date">${fmtDate(entry.ts)}</span>
     `;
     list.appendChild(li);
   });
+}
+
+// Patch openLeaderboard to handle async renderLeaderboard
+async function openLeaderboard() {
+  $('leaderboardModal').classList.remove('hidden');
+  await renderLeaderboard();
 }
 
 function escHtml(s) {
@@ -629,7 +668,7 @@ function nextQuestion() {
 /* ─────────────────────────────────────────────────
    END QUIZ → RESULT SCREEN
 ───────────────────────────────────────────────── */
-function endQuiz() {
+async function endQuiz() {
   clearTimer();
   const total    = state.questions.length;
   const score    = state.score;
@@ -638,7 +677,7 @@ function endQuiz() {
   // Final progress bar
   $('progressBarFill').style.width = '100%';
 
-  // Save
+  // Save to global leaderboard (async, non-blocking for UI)
   saveToLeaderboard(state.userName, score, total);
   localStorage.setItem('bijuAsks_lastScore', JSON.stringify({
     name: state.userName, score, total
@@ -688,11 +727,6 @@ $('leaderboardModal').addEventListener('click', e => {
   if (e.target === $('leaderboardModal'))
     $('leaderboardModal').classList.add('hidden');
 });
-
-function openLeaderboard() {
-  renderLeaderboard();
-  $('leaderboardModal').classList.remove('hidden');
-}
 
 /* ─────────────────────────────────────────────────
    CONFETTI

@@ -902,6 +902,25 @@ body::before {
   color: var(--ink-3);
 }
 
+.lb-pct {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+.lb-loading {
+  justify-content: center !important;
+  color: var(--ink-3);
+  font-style: italic;
+  font-size: 0.85rem;
+  background: var(--surface-2);
+  border: 1.5px dashed var(--border);
+}
+
+.leaderboard-list:has(.lb-loading) {
+  min-height: 60px;
+}
+
 .leaderboard-empty {
   text-align: center;
   color: var(--ink-3);
