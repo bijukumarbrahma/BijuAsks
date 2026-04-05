@@ -985,6 +985,6 @@ body::before {
   animation: bouncePop 0.4s ease both;
 }
 .leaderboard-list {
-  height: 300px;
+  height: 600px;
   overflow-y: scroll; /* always shows scrollbar */
 }
