@@ -151,41 +151,33 @@ function fmtDate(ts) {
 
 /* ─────────────────────────────────────────────────
     LEADERBOARD (Backend API)
-    Uses PHP backend when USE_BACKEND is true,
-    falls back to localStorage for offline mode.
+    Fetches fresh from database, no caching
  ───────────────────────────────────────────────── */
-const LB_GLOBAL_KEY = 'bijuAsks_global_leaderboard';
-
-async function fetchLeaderboardFromAPI() {
-  try {
-    const response = await fetch(`${API_BASE_URL}/leaderboard.php`);
-    if (!response.ok) throw new Error('API request failed');
-    const data = await response.json();
-    return data.success ? data.leaderboard : [];
-  } catch (err) {
-    console.warn('Leaderboard API unavailable:', err.message);
-    return null;
-  }
-}
 
 async function getGlobalLeaderboard() {
-  // Try backend API first if enabled
+  // Always fetch fresh from backend API
   if (USE_BACKEND) {
-    const apiLb = await fetchLeaderboardFromAPI();
-    if (apiLb) return apiLb;
+    try {
+      const response = await fetch(`${API_BASE_URL}/leaderboard.php?_=${Date.now()}`, {
+        cache: 'no-store',
+        headers: { 'Cache-Control': 'no-cache' }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.leaderboard) {
+          return data.leaderboard;
+        }
+      }
+    } catch (err) {
+      console.warn('Leaderboard API failed:', err.message);
+    }
   }
   
-  // Fallback to localStorage
-  try {
-    const stored = localStorage.getItem(LB_GLOBAL_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
+  return [];
 }
 
 async function saveToLeaderboard(name, score, total) {
-  // Save to backend API if enabled
+  // Save to backend API only (no localStorage caching)
   if (USE_BACKEND) {
     try {
       const response = await fetch(`${API_BASE_URL}/submit_score.php`, {
@@ -197,19 +189,8 @@ async function saveToLeaderboard(name, score, total) {
         console.log('Score saved to backend');
       }
     } catch (err) {
-      console.warn('Backend save failed, using fallback:', err.message);
+      console.warn('Backend save failed:', err.message);
     }
-  }
-  
-  // Always save to localStorage fallback
-  try {
-    const lb = await getGlobalLeaderboard();
-    lb.push({ name, score, total, ts: Date.now() });
-    lb.sort((a, b) => (b.score / b.total) - (a.score / a.total) || b.score - a.score);
-    const trimmed = lb.slice(0, 20);
-    localStorage.setItem(LB_GLOBAL_KEY, JSON.stringify(trimmed));
-  } catch (err) {
-    console.warn('Local leaderboard save failed:', err);
   }
 }
 
@@ -220,16 +201,6 @@ async function renderLeaderboard() {
   empty.classList.add('hidden');
 
   let lb = await getGlobalLeaderboard();
-
-  // Merge any offline fallback entries
-  try {
-    const fallback = JSON.parse(localStorage.getItem('bijuAsks_lb_fallback') || '[]');
-    if (fallback.length) {
-      lb = [...lb, ...fallback];
-      lb.sort((a,b)=>(b.score/b.total)-(a.score/a.total)||b.score-a.score);
-      lb = lb.slice(0,20);
-    }
-  } catch {}
 
   list.innerHTML = '';
   if (!lb.length) { empty.classList.remove('hidden'); return; }
