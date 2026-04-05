@@ -7,10 +7,20 @@
 'use strict';
 
 /* ─────────────────────────────────────────────────
-   QUESTION BANK
-   Each question: { q, options, answer (0-indexed),
-                    category: 'tech'|'science'|'general'|'math' }
-───────────────────────────────────────────────── */
+    BACKEND CONFIGURATION
+    Set API_BASE_URL to your backend URL.
+    For local development: 'http://localhost:8000'
+    For production: your Render deployment URL
+ ───────────────────────────────────────────────── */
+const API_BASE_URL = window.API_BASE_URL || 'http://localhost:8000';
+const USE_BACKEND = window.USE_BACKEND !== false; // Set to false to use local storage fallback
+
+/* ─────────────────────────────────────────────────
+    QUESTION BANK
+    Each question: { q, options, answer (0-indexed),
+                     category: 'tech'|'science'|'general'|'math' }
+    Fallback when API is unavailable
+ ───────────────────────────────────────────────── */
 const QUESTION_BANK = [
   // ── TECH ──
   {
@@ -294,13 +304,32 @@ function fmtDate(ts) {
 }
 
 /* ─────────────────────────────────────────────────
-   LEADERBOARD (Global Shared Storage)
-   Uses window.storage with shared:true so all
-   players across devices see the same board.
-───────────────────────────────────────────────── */
+    LEADERBOARD (Backend API)
+    Uses PHP backend when USE_BACKEND is true,
+    falls back to localStorage for offline mode.
+ ───────────────────────────────────────────────── */
 const LB_GLOBAL_KEY = 'bijuAsks_global_leaderboard';
 
+async function fetchLeaderboardFromAPI() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/leaderboard.php`);
+    if (!response.ok) throw new Error('API request failed');
+    const data = await response.json();
+    return data.success ? data.leaderboard : [];
+  } catch (err) {
+    console.warn('Leaderboard API unavailable:', err.message);
+    return null;
+  }
+}
+
 async function getGlobalLeaderboard() {
+  // Try backend API first if enabled
+  if (USE_BACKEND) {
+    const apiLb = await fetchLeaderboardFromAPI();
+    if (apiLb) return apiLb;
+  }
+  
+  // Fallback to window.storage (Cloudflare Store)
   try {
     const result = await window.storage.get(LB_GLOBAL_KEY, true);
     return result ? JSON.parse(result.value) : [];
@@ -310,21 +339,37 @@ async function getGlobalLeaderboard() {
 }
 
 async function saveToLeaderboard(name, score, total) {
+  // Save to backend API if enabled
+  if (USE_BACKEND) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/submit_score.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player_name: name, score, total })
+      });
+      if (response.ok) {
+        console.log('Score saved to backend');
+      }
+    } catch (err) {
+      console.warn('Backend save failed, using fallback:', err.message);
+    }
+  }
+  
+  // Always save to local fallback
   try {
     const lb = await getGlobalLeaderboard();
     lb.push({ name, score, total, ts: Date.now() });
     lb.sort((a, b) => (b.score / b.total) - (a.score / a.total) || b.score - a.score);
-    const trimmed = lb.slice(0, 20); // keep top 20 globally
-    await window.storage.set(LB_GLOBAL_KEY, JSON.stringify(trimmed), true);
+    const trimmed = lb.slice(0, 20);
+    
+    if (USE_BACKEND) {
+      // Try Cloudflare storage
+      await window.storage.set(LB_GLOBAL_KEY, JSON.stringify(trimmed), true);
+    } else {
+      localStorage.setItem(LB_GLOBAL_KEY, JSON.stringify(trimmed));
+    }
   } catch (err) {
-    console.warn('Global leaderboard save failed:', err);
-    // Fallback: save to localStorage so the score isn't lost
-    try {
-      const fallback = JSON.parse(localStorage.getItem('bijuAsks_lb_fallback') || '[]');
-      fallback.push({ name, score, total, ts: Date.now() });
-      fallback.sort((a,b)=>(b.score/b.total)-(a.score/a.total)||b.score-a.score);
-      localStorage.setItem('bijuAsks_lb_fallback', JSON.stringify(fallback.slice(0,10)));
-    } catch {}
+    console.warn('Local leaderboard save failed:', err);
   }
 }
 
@@ -388,8 +433,21 @@ function refreshLastScoreBanner() {
 }
 
 /* ─────────────────────────────────────────────────
-   CATEGORY PILLS
-───────────────────────────────────────────────── */
+    CATEGORY PILLS
+ ───────────────────────────────────────────────── */
+async function fetchQuestionsFromAPI(category, limit = 10) {
+  try {
+    const url = `${API_BASE_URL}/questions.php?category=${category}&limit=${limit}`;
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('API request failed');
+    const data = await response.json();
+    return data.success ? data.questions : null;
+  } catch (err) {
+    console.warn('Questions API unavailable:', err.message);
+    return null;
+  }
+}
+
 $('categoryPills').addEventListener('click', e => {
   const pill = e.target.closest('.pill');
   if (!pill) return;
@@ -414,25 +472,6 @@ function startQuiz() {
   }
   state.userName = name;
 
-  // Filter question bank
-  const pool = state.category === 'all'
-    ? QUESTION_BANK
-    : QUESTION_BANK.filter(q => q.category === state.category);
-
-  if (pool.length < QUESTIONS_PER_QUIZ) {
-    // Not enough questions — fall back to all
-    state.questions = shuffle(QUESTION_BANK).slice(0, QUESTIONS_PER_QUIZ);
-  } else {
-    state.questions = shuffle(pool).slice(0, QUESTIONS_PER_QUIZ);
-  }
-
-  // Reset state
-  state.currentIndex = 0;
-  state.score        = 0;
-  state.correctCount = 0;
-  state.wrongCount   = 0;
-  state.skippedCount = 0;
-
   // Loading screen
   showScreen('loading');
   const msgs = [
@@ -446,12 +485,47 @@ function startQuiz() {
     $('loadingText').textContent = msgs[++mi % msgs.length];
   }, 400);
 
-  setTimeout(() => {
+  // Fetch questions from API or use local fallback
+  async function loadQuestions() {
+    // Try backend API first if enabled
+    if (USE_BACKEND) {
+      const apiQuestions = await fetchQuestionsFromAPI(state.category, QUESTIONS_PER_QUIZ);
+      if (apiQuestions && apiQuestions.length >= QUESTIONS_PER_QUIZ) {
+        return apiQuestions;
+      }
+    }
+    
+    // Fallback to local question bank
+    const pool = state.category === 'all'
+      ? QUESTION_BANK
+      : QUESTION_BANK.filter(q => q.category === state.category);
+
+    if (pool.length < QUESTIONS_PER_QUIZ) {
+      return shuffle(QUESTION_BANK).slice(0, QUESTIONS_PER_QUIZ);
+    }
+    return shuffle(pool).slice(0, QUESTIONS_PER_QUIZ);
+  }
+
+  loadQuestions().then(questions => {
+    state.questions = questions;
+    
+    // Reset state
+    state.currentIndex = 0;
+    state.score        = 0;
+    state.correctCount = 0;
+    state.wrongCount   = 0;
+    state.skippedCount = 0;
+
     clearInterval(msgInterval);
     showScreen('quiz');
     setupQuizUI();
     renderQuestion();
-  }, 1600);
+  }).catch(err => {
+    console.error('Failed to load questions:', err);
+    clearInterval(msgInterval);
+    showScreen('landing');
+    alert('Failed to load questions. Please try again.');
+  });
 }
 
 /* ─────────────────────────────────────────────────
