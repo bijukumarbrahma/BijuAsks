@@ -155,23 +155,14 @@ function fmtDate(ts) {
  ───────────────────────────────────────────────── */
 
 async function getGlobalLeaderboard() {
-  console.log('USE_BACKEND:', USE_BACKEND, 'API_BASE_URL:', API_BASE_URL);
-  
   // Always fetch fresh from backend API
   if (USE_BACKEND) {
     try {
-      const url = `${API_BASE_URL}/leaderboard.php?_=${Date.now()}`;
-      console.log('Fetching leaderboard from:', url);
-      
-      const response = await fetch(url, {
+      const response = await fetch(`${API_BASE_URL}/leaderboard.php?_=${Date.now()}`, {
         cache: 'no-store'
       });
-      console.log('Response status:', response.status);
-      
       if (response.ok) {
         const data = await response.json();
-        console.log('Leaderboard data:', data);
-        
         if (data.success && data.leaderboard) {
           return data.leaderboard;
         }
@@ -222,7 +213,7 @@ async function renderLeaderboard() {
       <span class="lb-rank">${medals[i] || i + 1}</span>
       <span class="lb-name">${escHtml(entry.name)}</span>
       <span class="lb-score">${entry.score}/${entry.total} <small class="lb-pct">(${pct}%)</small></span>
-      <span class="lb-date">${fmtDate(entry.ts)}</span>
+      <span class="lb-date">${fmtDate(entry.timestamp || entry.ts)}</span>
     `;
     list.appendChild(li);
   });
