@@ -984,3 +984,7 @@ body::before {
 .score-pop {
   animation: bouncePop 0.4s ease both;
 }
+.list-container {
+  height: 300px;
+  overflow-y: scroll; /* always shows scrollbar */
+}
