@@ -155,15 +155,23 @@ function fmtDate(ts) {
  ───────────────────────────────────────────────── */
 
 async function getGlobalLeaderboard() {
+  console.log('USE_BACKEND:', USE_BACKEND, 'API_BASE_URL:', API_BASE_URL);
+  
   // Always fetch fresh from backend API
   if (USE_BACKEND) {
     try {
-      const response = await fetch(`${API_BASE_URL}/leaderboard.php?_=${Date.now()}`, {
-        cache: 'no-store',
-        headers: { 'Cache-Control': 'no-cache' }
+      const url = `${API_BASE_URL}/leaderboard.php?_=${Date.now()}`;
+      console.log('Fetching leaderboard from:', url);
+      
+      const response = await fetch(url, {
+        cache: 'no-store'
       });
+      console.log('Response status:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('Leaderboard data:', data);
+        
         if (data.success && data.leaderboard) {
           return data.leaderboard;
         }
