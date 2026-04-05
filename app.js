@@ -7,178 +7,34 @@
 'use strict';
 
 /* ─────────────────────────────────────────────────
-   QUESTION BANK
-   Each question: { q, options, answer (0-indexed),
-                    category: 'tech'|'science'|'general'|'math' }
-───────────────────────────────────────────────── */
-const QUESTION_BANK = [
-  // ── TECH ──
-  {
-    q: "What does 'HTTP' stand for?",
-    options: ["HyperText Transfer Protocol", "High-Traffic Transfer Process", "Hyper Terminal Text Protocol", "HyperLink Transmission Protocol"],
-    answer: 0, category: 'tech'
-  },
-  {
-    q: "Which programming language is known as the 'language of the web'?",
-    options: ["Python", "Java", "JavaScript", "Ruby"],
-    answer: 2, category: 'tech'
-  },
-  {
-    q: "What does 'CSS' stand for in web development?",
-    options: ["Computer Style Sheets", "Cascading Style Sheets", "Creative Style System", "Coded Style Syntax"],
-    answer: 1, category: 'tech'
-  },
-  {
-    q: "Which data structure operates on a LIFO (Last In, First Out) principle?",
-    options: ["Queue", "Linked List", "Stack", "Tree"],
-    answer: 2, category: 'tech'
-  },
-  {
-    q: "What is the time complexity of binary search on a sorted array?",
-    options: ["O(n)", "O(n²)", "O(log n)", "O(1)"],
-    answer: 2, category: 'tech'
-  },
-  {
-    q: "Which company developed the Python programming language?",
-    options: ["MIT", "Google", "Guido van Rossum (CWI)", "Sun Microsystems"],
-    answer: 2, category: 'tech'
-  },
-  {
-    q: "What does 'RAM' stand for in computing?",
-    options: ["Random Access Memory", "Read Arithmetic Memory", "Rapid Application Memory", "Remote Access Module"],
-    answer: 0, category: 'tech'
-  },
-  {
-    q: "Which protocol is used to send email?",
-    options: ["FTP", "SMTP", "POP3", "SSH"],
-    answer: 1, category: 'tech'
-  },
-  {
-    q: "In a boolean expression, what does the AND operator return when both values are true?",
-    options: ["false", "null", "true", "undefined"],
-    answer: 2, category: 'tech'
-  },
-  {
-    q: "What does 'API' stand for?",
-    options: ["Automated Program Interface", "Application Programming Interface", "Advanced Protocol Integration", "Applied Program Instruction"],
-    answer: 1, category: 'tech'
-  },
-  // ── SCIENCE ──
-  {
-    q: "What is the chemical symbol for gold?",
-    options: ["Gd", "Go", "Ag", "Au"],
-    answer: 3, category: 'science'
-  },
-  {
-    q: "What is the speed of light in a vacuum (approximately)?",
-    options: ["300,000 km/s", "150,000 km/s", "450,000 km/s", "3,000 km/s"],
-    answer: 0, category: 'science'
-  },
-  {
-    q: "How many bones are in the adult human body?",
-    options: ["196", "206", "216", "186"],
-    answer: 1, category: 'science'
-  },
-  {
-    q: "What is the powerhouse of the cell?",
-    options: ["Nucleus", "Ribosome", "Mitochondria", "Golgi apparatus"],
-    answer: 2, category: 'science'
-  },
-  {
-    q: "Which planet is known as the Red Planet?",
-    options: ["Jupiter", "Venus", "Saturn", "Mars"],
-    answer: 3, category: 'science'
-  },
-  {
-    q: "What is the atomic number of Carbon?",
-    options: ["8", "4", "6", "12"],
-    answer: 2, category: 'science'
-  },
-  {
-    q: "What gas do plants absorb during photosynthesis?",
-    options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"],
-    answer: 2, category: 'science'
-  },
-  {
-    q: "What is the hardest natural substance on Earth?",
-    options: ["Gold", "Quartz", "Iron", "Diamond"],
-    answer: 3, category: 'science'
-  },
-  // ── GENERAL ──
-  {
-    q: "What is the capital of France?",
-    options: ["Berlin", "Madrid", "Rome", "Paris"],
-    answer: 3, category: 'general'
-  },
-  {
-    q: "How many continents are there on Earth?",
-    options: ["5", "6", "7", "8"],
-    answer: 2, category: 'general'
-  },
-  {
-    q: "Who painted the Mona Lisa?",
-    options: ["Michelangelo", "Raphael", "Leonardo da Vinci", "Caravaggio"],
-    answer: 2, category: 'general'
-  },
-  {
-    q: "What is the largest ocean on Earth?",
-    options: ["Atlantic", "Indian", "Arctic", "Pacific"],
-    answer: 3, category: 'general'
-  },
-  {
-    q: "In which year did World War II end?",
-    options: ["1943", "1944", "1945", "1946"],
-    answer: 2, category: 'general'
-  },
-  {
-    q: "Which is the longest river in the world?",
-    options: ["Amazon", "Nile", "Yangtze", "Mississippi"],
-    answer: 1, category: 'general'
-  },
-  // ── MATH ──
-  {
-    q: "What is the value of π (pi) to two decimal places?",
-    options: ["3.12", "3.16", "3.14", "3.18"],
-    answer: 2, category: 'math'
-  },
-  {
-    q: "What is the square root of 144?",
-    options: ["11", "12", "13", "14"],
-    answer: 1, category: 'math'
-  },
-  {
-    q: "If a triangle has angles of 60° and 80°, what is the third angle?",
-    options: ["30°", "40°", "50°", "60°"],
-    answer: 1, category: 'math'
-  },
-  {
-    q: "What is 15% of 200?",
-    options: ["25", "30", "35", "40"],
-    answer: 1, category: 'math'
-  },
-  {
-    q: "Which of the following is a prime number?",
-    options: ["21", "27", "33", "37"],
-    answer: 3, category: 'math'
-  },
-  {
-    q: "What is 2 to the power of 10?",
-    options: ["512", "1024", "2048", "256"],
-    answer: 1, category: 'math'
-  },
-];
+    BACKEND CONFIGURATION
+    Set API_BASE_URL to your backend URL.
+    For local development: 'http://localhost:8000'
+    For production: your Render deployment URL
+ ───────────────────────────────────────────────── */
+const API_BASE_URL = window.API_BASE_URL || 'http://localhost:8000';
+const USE_BACKEND = window.USE_BACKEND !== false;
 
 const QUESTIONS_PER_QUIZ = 10;
 const TIMER_SECONDS = 15;
 const SKIP_PENALTY = 1;
-const CATEGORY_LABELS = { tech:'💻 Tech', science:'🔬 Science', general:'🌍 General', math:'🔢 Math', all:'All' };
+const CATEGORY_LABELS = { tech:'💻 Tech', science:'🔬 Science', general:'🌍 General', math:'🔢 Math', random:'🎲 Random' };
+
+// Open Trivia DB category mapping
+const OPENTDB_CATEGORIES = {
+  random: null,           // No category = random
+  tech: 18,              // Science: Computers
+  science: 17,           // Science & Nature
+  general: 9,            // General Knowledge
+  math: 19               // Science: Mathematics
+};
 
 /* ─────────────────────────────────────────────────
    STATE
 ───────────────────────────────────────────────── */
 let state = {
   userName: '',
-  category: 'all',
+  category: 'random',
   questions: [],
   currentIndex: 0,
   score: 0,
@@ -294,37 +150,46 @@ function fmtDate(ts) {
 }
 
 /* ─────────────────────────────────────────────────
-   LEADERBOARD (Global Shared Storage)
-   Uses window.storage with shared:true so all
-   players across devices see the same board.
-───────────────────────────────────────────────── */
-const LB_GLOBAL_KEY = 'bijuAsks_global_leaderboard';
+    LEADERBOARD (Backend API)
+    Fetches fresh from database, no caching
+ ───────────────────────────────────────────────── */
 
 async function getGlobalLeaderboard() {
-  try {
-    const result = await window.storage.get(LB_GLOBAL_KEY, true);
-    return result ? JSON.parse(result.value) : [];
-  } catch {
-    return [];
+  // Always fetch fresh from backend API
+  if (USE_BACKEND) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/leaderboard.php?_=${Date.now()}`, {
+        cache: 'no-store'
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.leaderboard) {
+          return data.leaderboard;
+        }
+      }
+    } catch (err) {
+      console.warn('Leaderboard API failed:', err.message);
+    }
   }
+  
+  return [];
 }
 
 async function saveToLeaderboard(name, score, total) {
-  try {
-    const lb = await getGlobalLeaderboard();
-    lb.push({ name, score, total, ts: Date.now() });
-    lb.sort((a, b) => (b.score / b.total) - (a.score / a.total) || b.score - a.score);
-    const trimmed = lb.slice(0, 20); // keep top 20 globally
-    await window.storage.set(LB_GLOBAL_KEY, JSON.stringify(trimmed), true);
-  } catch (err) {
-    console.warn('Global leaderboard save failed:', err);
-    // Fallback: save to localStorage so the score isn't lost
+  // Save to backend API only (no localStorage caching)
+  if (USE_BACKEND) {
     try {
-      const fallback = JSON.parse(localStorage.getItem('bijuAsks_lb_fallback') || '[]');
-      fallback.push({ name, score, total, ts: Date.now() });
-      fallback.sort((a,b)=>(b.score/b.total)-(a.score/a.total)||b.score-a.score);
-      localStorage.setItem('bijuAsks_lb_fallback', JSON.stringify(fallback.slice(0,10)));
-    } catch {}
+      const response = await fetch(`${API_BASE_URL}/submit_score.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player_name: name, score, total })
+      });
+      if (response.ok) {
+        console.log('Score saved to backend');
+      }
+    } catch (err) {
+      console.warn('Backend save failed:', err.message);
+    }
   }
 }
 
@@ -335,16 +200,6 @@ async function renderLeaderboard() {
   empty.classList.add('hidden');
 
   let lb = await getGlobalLeaderboard();
-
-  // Merge any offline fallback entries
-  try {
-    const fallback = JSON.parse(localStorage.getItem('bijuAsks_lb_fallback') || '[]');
-    if (fallback.length) {
-      lb = [...lb, ...fallback];
-      lb.sort((a,b)=>(b.score/b.total)-(a.score/a.total)||b.score-a.score);
-      lb = lb.slice(0,20);
-    }
-  } catch {}
 
   list.innerHTML = '';
   if (!lb.length) { empty.classList.remove('hidden'); return; }
@@ -358,7 +213,7 @@ async function renderLeaderboard() {
       <span class="lb-rank">${medals[i] || i + 1}</span>
       <span class="lb-name">${escHtml(entry.name)}</span>
       <span class="lb-score">${entry.score}/${entry.total} <small class="lb-pct">(${pct}%)</small></span>
-      <span class="lb-date">${fmtDate(entry.ts)}</span>
+      <span class="lb-date">${fmtDate(entry.timestamp || entry.ts)}</span>
     `;
     list.appendChild(li);
   });
@@ -388,8 +243,57 @@ function refreshLastScoreBanner() {
 }
 
 /* ─────────────────────────────────────────────────
-   CATEGORY PILLS
-───────────────────────────────────────────────── */
+    CATEGORY PILLS
+ ───────────────────────────────────────────────── */
+
+// Fetch questions from Open Trivia Database
+async function fetchQuestionsFromAPI(category, limit = 10) {
+  try {
+    let url = `https://opentdb.com/api.php?amount=${limit}&type=multiple`;
+    
+    // Add category parameter if not random
+    const opentdbCat = OPENTDB_CATEGORIES[category];
+    if (opentdbCat) {
+      url += `&category=${opentdbCat}`;
+    }
+    
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('API request failed');
+    
+    const data = await response.json();
+    
+    if (data.response_code !== 0 || !data.results || data.results.length === 0) {
+      console.warn('OpenTDB returned no questions');
+      return null;
+    }
+    
+    // Transform OpenTDB format to our format
+    return data.results.map(q => {
+      const allOptions = [...q.incorrect_answers, q.correct_answer];
+      const shuffledOptions = shuffle(allOptions);
+      const correctIndex = shuffledOptions.indexOf(q.correct_answer);
+      
+      return {
+        q: decodeHTML(q.question),
+        options: shuffledOptions.map(opt => decodeHTML(opt)),
+        answer: correctIndex >= 0 ? correctIndex : 0,
+        category: category
+      };
+    });
+    
+  } catch (err) {
+    console.warn('Questions API unavailable:', err.message);
+    return null;
+  }
+}
+
+// Decode HTML entities from OpenTDB
+function decodeHTML(html) {
+  const txt = document.createElement('textarea');
+  txt.innerHTML = html;
+  return txt.value;
+}
+
 $('categoryPills').addEventListener('click', e => {
   const pill = e.target.closest('.pill');
   if (!pill) return;
@@ -414,25 +318,6 @@ function startQuiz() {
   }
   state.userName = name;
 
-  // Filter question bank
-  const pool = state.category === 'all'
-    ? QUESTION_BANK
-    : QUESTION_BANK.filter(q => q.category === state.category);
-
-  if (pool.length < QUESTIONS_PER_QUIZ) {
-    // Not enough questions — fall back to all
-    state.questions = shuffle(QUESTION_BANK).slice(0, QUESTIONS_PER_QUIZ);
-  } else {
-    state.questions = shuffle(pool).slice(0, QUESTIONS_PER_QUIZ);
-  }
-
-  // Reset state
-  state.currentIndex = 0;
-  state.score        = 0;
-  state.correctCount = 0;
-  state.wrongCount   = 0;
-  state.skippedCount = 0;
-
   // Loading screen
   showScreen('loading');
   const msgs = [
@@ -446,12 +331,35 @@ function startQuiz() {
     $('loadingText').textContent = msgs[++mi % msgs.length];
   }, 400);
 
-  setTimeout(() => {
+  // Fetch questions from API only
+  async function loadQuestions() {
+    const apiQuestions = await fetchQuestionsFromAPI(state.category, QUESTIONS_PER_QUIZ);
+    if (apiQuestions && apiQuestions.length >= QUESTIONS_PER_QUIZ) {
+      return apiQuestions;
+    }
+    throw new Error('No questions available from server');
+  }
+
+  loadQuestions().then(questions => {
+    state.questions = questions;
+    
+    // Reset state
+    state.currentIndex = 0;
+    state.score        = 0;
+    state.correctCount = 0;
+    state.wrongCount   = 0;
+    state.skippedCount = 0;
+
     clearInterval(msgInterval);
     showScreen('quiz');
     setupQuizUI();
     renderQuestion();
-  }, 1600);
+  }).catch(err => {
+    console.error('Failed to load questions:', err);
+    clearInterval(msgInterval);
+    showScreen('landing');
+    alert('Failed to load questions. Please try again.');
+  });
 }
 
 /* ─────────────────────────────────────────────────
