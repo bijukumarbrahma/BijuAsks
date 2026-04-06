@@ -15,6 +15,8 @@
 const API_BASE_URL = window.API_BASE_URL || 'http://localhost:8000';
 const USE_BACKEND = window.USE_BACKEND !== false;
 
+const bannedWords = ["sex", "fuck", "bitch", "ass", "xxx"];
+
 const QUESTIONS_PER_QUIZ = 10;
 const TIMER_SECONDS = 15;
 const SKIP_PENALTY = 1;
@@ -695,3 +697,17 @@ function launchConfetti() {
 ───────────────────────────────────────────────── */
 refreshLastScoreBanner();
 showScreen('landing');
+
+function isValidName(name) {
+  const lower = name.toLowerCase();
+  return !bannedWords.some(word => lower.includes(word));
+}
+
+// Usage
+const username = input.value;
+
+if (!isValidName(username)) {
+  alert("❌ Inappropriate name not allowed");
+} else {
+  // continue game
+}
