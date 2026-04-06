@@ -310,20 +310,18 @@ $('categoryPills').addEventListener('click', e => {
 const BLOCKED_WORDS = [
   // Sexual / explicit
   'fuck','fucker','fucking','fucked','fuck','f**k','f*ck',
-  'shit','shite','bullshit','horseshit',
-  'ass','arse','asshole','arsehole','ass hole',
-  'bitch','bitches','bastard','bastards',
+  'shit','shite','bullshit','horseshit','lwdwi', 'cfa', 'lwda',
+  'ass','arse','asshole','arsehole','ass hole','xxt',
+  'bitch','bitches','bastard','bastards','faa','ex',
   'dick','dicks','dickhead','cock','cocks','cockhead',
-  'pussy','pussies','cunt','cunts','gay',
+  'pussy','pussies','cunt','cunts','gay', 'lesbian',
   'whore','whores','slut','sluts','skank','skanks',
   'nigger','nigga','niggas','nig','chink','spic','kike','fag','faggot','dyke',
   'sex','sexy','porn','porno','xxx','nude','naked',
   'penis','vagina','boob','boobs','tits','tit','titties','butt','butts',
   'rape','rapist','molest',
-  // Violence / hate
   'kill','killer','murder','murderer','terrorist','nazi','hitler',
   'hate','hater','racist','racism',
-  // Misc offensive
   'idiot','moron','retard','retarded','stupid','dumb','loser',
   'hell','damn','crap','piss','pissed','prick','twat',
 ];
