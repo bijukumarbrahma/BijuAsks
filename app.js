@@ -314,7 +314,7 @@ const BLOCKED_WORDS = [
   'ass','arse','asshole','arsehole','ass hole',
   'bitch','bitches','bastard','bastards',
   'dick','dicks','dickhead','cock','cocks','cockhead',
-  'pussy','pussies','cunt','cunts',
+  'pussy','pussies','cunt','cunts','gay',
   'whore','whores','slut','sluts','skank','skanks',
   'nigger','nigga','niggas','nig','chink','spic','kike','fag','faggot','dyke',
   'sex','sexy','porn','porno','xxx','nude','naked',
