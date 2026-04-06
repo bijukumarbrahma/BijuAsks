@@ -15,7 +15,7 @@
 const API_BASE_URL = window.API_BASE_URL || 'http://localhost:8000';
 const USE_BACKEND = window.USE_BACKEND !== false;
 
-const bannedWords = ["sex", "fuck", "bitch", "ass", "xxx"];
+
 
 const QUESTIONS_PER_QUIZ = 10;
 const TIMER_SECONDS = 15;
@@ -305,6 +305,52 @@ $('categoryPills').addEventListener('click', e => {
 });
 
 /* ─────────────────────────────────────────────────
+   PROFANITY FILTER
+───────────────────────────────────────────────── */
+const BLOCKED_WORDS = [
+  // Sexual / explicit
+  'fuck','fucker','fucking','fucked','fuck','f**k','f*ck',
+  'shit','shite','bullshit','horseshit',
+  'ass','arse','asshole','arsehole','ass hole',
+  'bitch','bitches','bastard','bastards',
+  'dick','dicks','dickhead','cock','cocks','cockhead',
+  'pussy','pussies','cunt','cunts',
+  'whore','whores','slut','sluts','skank','skanks',
+  'nigger','nigga','niggas','nig','chink','spic','kike','fag','faggot','dyke',
+  'sex','sexy','porn','porno','xxx','nude','naked',
+  'penis','vagina','boob','boobs','tits','tit','titties','butt','butts',
+  'rape','rapist','molest',
+  // Violence / hate
+  'kill','killer','murder','murderer','terrorist','nazi','hitler',
+  'hate','hater','racist','racism',
+  // Misc offensive
+  'idiot','moron','retard','retarded','stupid','dumb','loser',
+  'hell','damn','crap','piss','pissed','prick','twat',
+];
+
+/** Returns true if the name contains any blocked word */
+function containsProfanity(name) {
+  const normalized = name.toLowerCase().replace(/[^a-z0-9]/g, '');
+  return BLOCKED_WORDS.some(word => {
+    const clean = word.replace(/[^a-z0-9]/g, '');
+    return normalized.includes(clean);
+  });
+}
+
+/** Show an inline error under the name input */
+function showNameError(msg) {
+  let err = $('nameError');
+  if (!err) {
+    err = document.createElement('p');
+    err.id = 'nameError';
+    err.style.cssText = 'color:#e05555;font-size:0.82rem;margin-top:6px;font-weight:500;min-height:1em;';
+    $('nameInput').insertAdjacentElement('afterend', err);
+  }
+  err.textContent = msg;
+  setTimeout(() => { if (err) err.textContent = ''; }, 3000);
+}
+
+/* ─────────────────────────────────────────────────
    LANDING — START
 ───────────────────────────────────────────────── */
 $('startBtn').addEventListener('click', startQuiz);
@@ -318,6 +364,16 @@ function startQuiz() {
     $('nameInput').focus();
     return;
   }
+
+  // Profanity check
+  if (containsProfanity(name)) {
+    $('nameInput').classList.add('shake');
+    setTimeout(() => $('nameInput').classList.remove('shake'), 500);
+    showNameError('⚠️ Please choose a respectful name to continue.');
+    $('nameInput').focus();
+    return;
+  }
+
   state.userName = name;
 
   // Loading screen
@@ -697,17 +753,3 @@ function launchConfetti() {
 ───────────────────────────────────────────────── */
 refreshLastScoreBanner();
 showScreen('landing');
-
-function isValidName(name) {
-  const lower = name.toLowerCase();
-  return !bannedWords.some(word => lower.includes(word));
-}
-
-// Usage
-const username = input.value;
-
-if (!isValidName(username)) {
-  alert("❌ Inappropriate name not allowed");
-} else {
-  // continue game
-}
