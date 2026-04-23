@@ -303,7 +303,7 @@ $('categoryPills').addEventListener('click', e => {
   pill.classList.add('active');
   state.category = pill.dataset.cat;
 });
-
+  
 /* ─────────────────────────────────────────────────
    PROFANITY FILTER
 ───────────────────────────────────────────────── */
