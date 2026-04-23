@@ -12,7 +12,7 @@
     For local development: 'http://localhost:8000'
     For production: your Render deployment URL
  ───────────────────────────────────────────────── */
-const API_BASE_URL = window.API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = window.API_BASE_URL || 'https://bijuasksbackend-u19l.onrender.com';
 const USE_BACKEND = window.USE_BACKEND !== false;
 
 
